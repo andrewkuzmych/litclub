@@ -1,0 +1,22 @@
+<style>
+    a.menu, a.menu:visited {
+        color: #186d87;
+        padding: 1px 6px
+    }
+
+    a.selected, a.selected:visited {
+        color: #186D87;
+        background-color: white;
+        text-decoration: none;
+    }
+</style>
+
+<div style='font-size: 24px; padding:10px;'>
+    <a href="/info/editors/" class="menu {% ifequal type '!!!' %}selected{% endifequal %}">Редакция</a>&nbsp;
+    <a href="/info/use/" class="menu {% ifequal type '!!!' %}selected{% endifequal %}">Правила сайта</a>
+    <a href="/users/list/" class="menu {% ifequal page 'authors' %}selected{% endifequal %}">Авторы</a>&nbsp;
+    <a href="/texts/list/1/" class="menu {% ifequal type '1' %}selected{% endifequal %}">Проза</a>&nbsp;
+    <a href="/texts/list/2/" class="menu {% ifequal type '2' %}selected{% endifequal %}">Поэзия</a>&nbsp;
+    <a href="/texts/list/5/" class="menu {% ifequal type '5' %}selected{% endifequal %}">Критика</a>&nbsp;
+    <a href="/texts/list/3/" class="menu {% ifequal type '3' %}selected{% endifequal %}">Другое</a>
+</div>

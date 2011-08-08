@@ -1,0 +1,63 @@
+<html>
+<head>
+    <title>{% block title %}Публикатор{% endblock %}</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <link href="{{ MEDIA_URL }}css/main_002.css" rel="stylesheet" type="text/css">
+
+    <style>
+        div.large, div.large td {
+            font-size: 18px;
+        }
+
+        div.large input {
+            font-size: 18px;
+        }
+
+        div.medium, div.medium td {
+            font-size: 15px;
+        }
+
+        div.medium input {
+            font-size: 15px;
+        }
+
+        div.large h1, div.medium h1 {
+            color: #3A869B
+        }
+
+        div.large .error, div.medium .error {
+            font: 13px Arial, sans-serif;
+            color: red;
+            padding-bottom: 3px;
+        }
+
+    </style>
+</head>
+<body>
+
+<style>
+    .lightlogo a, .lightlogo a:link, .lightlogo a:visited, .lightlogo a:active, .lightlogo {
+        color: #ccc;
+        font-size: 11px;
+    }
+</style>
+<div style='position: absolute; top: 30px; left: 50px; width: 169px; text-align: center;' class=lightlogo>
+    <a href="/"><img src="{{ MEDIA_URL }}img/logo-face.gif" border=0 vspace=5 hspace=10><br>
+        на главную
+    </a>
+</div>
+
+<div style='position: absolute; top: 140px; left: 0px;'>
+    {% block left %}
+    {% endblock %}
+</div>
+
+
+<div style='padding-left: 260px; padding-top: 20px;'>
+    {% block main %}
+
+    {% endblock %}
+</div>
+
+</body>
+</html>

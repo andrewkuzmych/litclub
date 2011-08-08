@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load texts %}
+
+{% block fullwidth %}
+    <style>
+        .users td {
+            vertical-align: top;
+        }
+    </style>
+    <div style="margin: 0 20px ">
+    <h1>Автори</h1>
+    <p>На цій сторінці всі автори, які мають на Літклубі хоча б три твори. (Кількість творів у дужках.)</p>
+    <table width=100% class=users>
+        <tr>
+            <td width=50%>
+                {% for g in groups %}
+                    {% if not g.column2 %}
+                        <h2>{{ g.fl }}</h2>
+                        <ul>
+                            {% for u in g.users %}
+                                <li><a href="/users/profile/{{ u.username }}/">{{ u.name }}</a> ({{ u.texts }})</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endfor %}
+            </td>
+            <td>
+                {% for g in groups %}
+                    {% if g.column2 %}
+                        <h2>{{ g.fl }}</h2>
+                        <ul>
+                            {% for u in g.users %}
+                                <li><a href="/users/profile/{{ u.username }}/">{{ u.name }}</a> ({{ u.texts }})</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+
+{% endblock %}
+{% block right %}{% endblock %}

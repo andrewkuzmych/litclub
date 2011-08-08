@@ -1,0 +1,79 @@
+{% extends "light.html" %}
+{% load texts %}
+
+{% block main %}
+    <div class=large>
+        {% ifequal mode 'add' %}
+            <h1>Добавление произведения</h1>
+        {% else %}
+            <h1>Редактирование произведения</h1>
+        {% endifequal %}
+    </div>
+
+{% endblock %}
+
+{% block left %}
+    <style>
+        div.add_text {
+            font-size: 13px;
+        }
+
+        div.add_text input {
+            width: 700px;
+            font: 26px Times, serif;
+        }
+
+        div.add_text textarea {
+            font: 13px Verdana, sans-serif;
+        }
+
+        #id_annotation {
+            width: 700px;
+            height: 55px;
+        }
+
+        #id_text {
+            width: 700px;
+            height: 300px;
+        }
+
+        div.add_text label {
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        div.add_text ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        div.add_text li {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            list-style-position: outside;
+            margin-bottom: 12px;
+        }
+
+        div.add_text .errorlist li {
+            margin: 0;
+            margin-top: 18px;
+            margin-bottom: 2px;
+            background-color: red;
+            color: white;
+            padding: 1px 3px;
+        }
+    </style>
+
+    <div style='padding-left: 60px;' class=add_text>
+
+        <form method=post action=".">
+            {{ form.as_ul }}
+
+            <div><input style='width: 140px; font-size: 18px;'
+                        value=" {% ifequal mode 'add' %}Добавить{% else %}Изменить{% endifequal %}
+ " type="submit"></div>
+
+        </form>
+    </div>
+{% endblock %}

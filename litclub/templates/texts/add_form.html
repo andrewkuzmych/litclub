@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load texts %}
+
+{% block main %}
+    <style>
+        .vTextField {
+            width: 600px;
+            font: 26px Times, serif;
+        }
+
+        .vLargeTextField {
+            width: 600px;
+            height: 400px;
+            font: 13px Verdana, sans-serif;
+        }
+
+    </style>
+
+    <form method=post action=".?related={{ related.id }}">
+        <div id="content-margin">
+            <table>
+                <tr>
+                    <td></td>
+                    <td><h1>Додавання тексту в категорію &laquo;{{ type|cattext }}&raquo;</h1></td>
+                </tr>
+                <tr>
+                    <td colspan=2>
+                        <div class=spacer></div>
+                    </td>
+                </tr>
+                {% ifequal type '5' %}
+                    {% if related %}
+                        <tr>
+                            <td colspan=2>
+                                <div><b>на твір «{{ related.get_title }}»
+                                    автора {{ related.user.get_profile.get_name }}</b></div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan=2>
+                                <div><b>Щоб написати рецензію на конкретний твір на Літклубі, натисність на «написати
+                                    рецензію» в цьому творі.</b></div>
+                            </td>
+                        </tr>
+                    {% endif %}
+                    <tr>
+                        <td colspan=2>
+                            <div class=spacer></div>
+                        </td>
+                    </tr>
+                {% endifequal %}
+
+                <tr>
+                    <td width=200>Назва:</td>
+                    <td>{{ form.title }}</td>
+                </tr>
+                {% if form.title.errors %}
+                    <tr>
+                    <td></td>
+                    <td class=error>{{ form.title.errors|join:" " }}</td></tr>{% endif %}
+                <tr>
+                    <td width=200>Текст:</td>
+                    <td>{{ form.text }}</td>
+                </tr>
+                {% if form.text.errors %}
+                    <tr>
+                    <td></td>
+                    <td class=error>{{ form.text.errors|join:" " }}</td></tr>{% endif %}
+                <tr style='display: none'>
+                    <td width=200>Дозволити коментарі:</td>
+                    <td>{{ form.allow_comments }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input value=" Додати " type="submit"></td>
+                </tr>
+            </table>
+        </div>
+    </form>
+{% endblock %}
+{% block right %}{% endblock %}

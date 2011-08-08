@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block main %}
+    <form method=post action=/users/change_profile/>
+        <div id="content-margin">
+            <table>
+                <tr>
+                    <td></td>
+                    <td><h1>Персональні дані</h1></td>
+                </tr>
+
+                <tr>
+                    <td colspan=2>
+                        <div class=spacer></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td width=250>Ім'я:</td>
+                    <td>{{ form.name }}</td>
+                </tr>
+                {% if form.name.errors %}
+                    <tr>
+                        <td></td>
+                        <td class=error>{{ form.name.errors|join:" " }}</td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <td width=250>Стать:</td>
+                    <td>{{ form.gender }}</td>
+                </tr>
+                <tr>
+                    <td width=250>Адреса ел. пошти:</td>
+                    <td>{{ form.email }}</td>
+                </tr>
+                {% if form.email.errors %}
+                    <tr>
+                        <td></td>
+                        <td class=error>{{ form.email.errors|join:" " }}</td>
+                    </tr>
+                {% endif %}
+
+                <tr>
+                    <td>Сторінка vkontakte:</td>
+                    <td>{{ form.vkontakte }}</td>
+                </tr>
+                <tr>
+                    <td>Країна:</td>
+                    <td>{{ form.country }}</td>
+                </tr>
+                <tr>
+                    <td>Місто:</td>
+                    <td>{{ form.city }}</td>
+                </tr>
+
+                <tr>
+                    <td width=250>Інфо:</td>
+                    <td>{{ form.about }}</td>
+                </tr>
+                {% if form.about.errors %}
+                    <tr>
+                        <td></td>
+                        <td class=error>{{ form.about.errors|join:" " }}</td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <td width=250>Надсилати коментарі ел. поштою:</td>
+                    <td>{{ form.comments }}</td>
+                </tr>
+                <tr>
+                    <td width=250>Не показувати рекламу:</td>
+                    <td>{{ form.dont_show_ads }}</td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td><input value=" Зберегти " type="submit"></td>
+                </tr>
+            </table>
+        </div>
+    </form>
+{% endblock %}
+{% block right %}{% endblock %}

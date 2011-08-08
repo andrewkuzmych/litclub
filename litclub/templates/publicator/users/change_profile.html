@@ -1,0 +1,65 @@
+{% extends "light.html" %}
+
+{% block left %}
+    <style>
+        .options_navi {
+            margin-bottom: 9px;
+        }
+    </style>
+
+    <div style='padding-left: 40px; padding-top: 10px; font-size: 13px;'>
+        <div style='color: gray; font-size: 15px; padding-bottom: 9px;'>Настройки</div>
+        <div class=options_navi>Отредактировать профиль</div>
+        <div class=options_navi><a href="/users/change_userpic/">Сменить юзерпик</a></div>
+        <div class=options_navi><a href="/users/change_password/">Установить новый пароль</a></div>
+    </div>
+{% endblock %}
+
+{% block title %}Редактирование профиля{% endblock %}
+
+{% block main %}
+    <div class=medium style='padding-left: 40px;'>
+        <h1>Редактирование профиля</h1>
+        <form method=post action=/users/change_profile/>
+            <div id="content-margin">
+                <table>
+                    <tr>
+                        <td width=250>Имя (или псевдоним):</td>
+                        <td>{{ form.name }}</td>
+                    </tr>
+                    {% if form.name.errors %}
+                        <tr>
+                        <td></td>
+                        <td class=error>{{ form.name.errors|join:" " }}</td></tr>{% endif %}
+                    <tr>
+                        <td>Адрес эл. почты:</td>
+                        <td>{{ form.email }}</td>
+                    </tr>
+                    {% if form.email.errors %}
+                        <tr>
+                        <td></td>
+                        <td class=error>{{ form.email.errors|join:" " }}</td></tr>{% endif %}
+                    <tr>
+                        <td>Инфо:</td>
+                        <td>{{ form.about }}</td>
+                    </tr>
+                    {% if form.about.errors %}
+                        <tr>
+                        <td></td>
+                        <td class=error>{{ form.about.errors|join:" " }}</td></tr>{% endif %}
+                    <tr>
+                        <td colspan=2>{{ form.comments }} <label for="id_comments">Получать комментарии в почту</label>
+                    </tr>
+                    <tr>
+                        <td colspan=2>{{ form.dont_show_ads }} <label for="id_dont_show_ads">Отключить рекламу</label>
+                    </tr>
+
+                    <tr>
+                        <td colspan=2 style='padding-top: 12px;'><input value=" Сохранить "
+                                                                        type="submit"> {% if messages %}<span
+                                style='color: green; padding-left: 12px;'>Данные сохранены</span>{% endif %}</td></tr>
+                </table>
+            </div>
+        </form>
+    </div>
+{% endblock %}

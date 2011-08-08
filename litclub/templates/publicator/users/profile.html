@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load texts %}
+{% load html %}
+
+{% block fullwidth %}
+
+    {% if u.name %}
+        <h1 style='margin-bottom: 6px;'>{{ u.name|striptags }}</h1>
+        {{ u.username }}<br>
+    {% else %}
+        <h1>{{ u.username }}</h1>
+    {% endif %}
+
+    <div id="em"></div>
+    {% ifequal u.split_email.1 "nvc.com.ua" %}
+    {% else %}
+        <script type="text/javascript">
+            function ec(t) {
+                z = '{{ u.split_email.1 }}';
+                document.getElementById('em').innerHTML = ' <a href=' + '"mai' + 'lto:' + t + '@' + z + '">' + t + '@' + z + '<' + '/a>';
+                clearTimeout(to);
+            }
+            var to = setTimeout("ec('{{ u.split_email.0 }}')", 10);
+        </script>
+    {% endifequal %}
+
+    <div class=spacer></div>
+
+    <div class=spacer></div>
+    {% if u.userpic %}<img class=userpic src="{{ u.get_userpic_url }}" alt="" class=userpic>{% else %}<img
+            src="http://media.litclub.org.ua/userpics/nos" width=48 height=48 alt="" class=userpic>{% endif %}
+    <div class=spacer></div>
+    <div class=spacer></div>
+    {{ u.about|some_html|safe|linebreaksbr }}
+    <div class=spacer></div>
+    <h2>Произведений: {{ u.count_texts }}</h2>
+
+    {% if u.get_texts %}
+        {% regroup u.get_texts by type as grouped %}
+        {% for group in grouped %}
+            {{ group.grouper|cattextru }}
+            <div style='margin: 3px 0 12px 20px; padding: 0;'>
+                {% for t in group.list %}
+                    <div style='margin-bottom: 4px; text-align: left;'><a
+                            href="{{ t.get_absolute_url }}">{{ t.get_title|striptags }}</a></div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    </div>
+{% endblock %}

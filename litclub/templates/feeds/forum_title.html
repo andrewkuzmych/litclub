@@ -1,0 +1,1 @@
+{{ obj.title|safe }} — {% if obj.user.get_profile.name %}{{ obj.user.get_profile.name }}{% else %}{{ obj.user }}{% endif %}

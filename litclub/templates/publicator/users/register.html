@@ -1,0 +1,60 @@
+{% extends "light.html" %}
+
+{% block title %}Регистрация на Публикаторе{% endblock %}
+
+{% block main %}
+    <div class=medium>
+
+        <h1>Регистрация на Публикаторе</h1>
+
+        <form method=post action=/users/register/>
+            <div id="content-margin">
+                <table>
+                    <tr>
+                        <td width=170>Логин:</td>
+                        <td>{{ form.username }}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class=error>
+                            <div style='color: gray;'>Может состоять только из маленьких английских букв, цифр и знаков
+                                подчеркивания.
+                            </div>{% if form.username.errors %}
+                            <div>{{ form.username.errors|join:" " }}</div>{% endif %}</td></tr>
+
+                    <tr>
+                        <td style='padding-top: 6px;'>Пароль:</td>
+                        <td style='padding-top: 6px;'>{{ form.password1 }}</td>
+                    </tr>
+                    <tr>
+                        <td style='padding-top: 6px;'>Еще раз пароль:</td>
+                        <td style='padding-top: 6px;'>{{ form.password2 }}</td>
+                    </tr>
+                    {% if form.password1.errors %}
+                        <tr>
+                        <td></td>
+                        <td class=error>{{ form.password1.errors|join:" " }}</td></tr>{% endif %}
+
+                    <tr>
+                        <td style='padding-top: 6px;'>Эл. почта:</td>
+                        <td style='padding-top: 6px;'>{{ form.email }}</td>
+                    </tr>
+                    {% if form.email.errors %}
+                        <tr>
+                        <td></td>
+                        <td class=error>{{ form.email.errors|join:" " }}</td></tr>{% endif %}
+
+
+                    <tr>
+                        <td></td>
+                        <td style='padding-top: 9px;'><input value="  Зарегистрироваться  " type="submit"></td>
+                    </tr>
+
+
+                </table>
+            </div>
+        </form>
+
+
+    </div>
+{% endblock %}

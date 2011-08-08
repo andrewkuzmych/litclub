@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block main %}
+    <style>
+        .vTextField {
+            width: 600px;
+            font: 26px Times, serif;
+        }
+
+        .vLargeTextField {
+            width: 600px;
+            height: 400px;
+            font: 13px Verdana, sans-serif;
+        }
+
+    </style>
+
+
+    <form method=post action=/texts/change/{{ text.id }}/>
+        <div id="content-margin">
+            <table>
+                <tr>
+                    <td></td>
+                    <td><h1>Зміна тексту</h1></td>
+                </tr>
+                {% if form.has_errors %}
+                    {% for e in form.error_dict %}
+                        {{ e }}
+                    {% endfor %}
+                    {{ form.user.errors|join:" " }}
+                {% endif %}
+                <tr>
+                    <td colspan=2>
+                        <div class=spacer></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td width=200>Назва:</td>
+                    <td>{{ form.title }}</td>
+                </tr>
+                {% if form.title.errors %}
+                    <tr>
+                    <td></td>
+                    <td class=error>{{ form.title.errors|join:" " }}</td></tr>{% endif %}
+                <tr>
+                    <td width=200>Текст:</td>
+                    <td>{{ form.text }}</td>
+                </tr>
+                {% if form.text.errors %}
+                    <tr>
+                    <td></td>
+                    <td class=error>{{ form.text.errors|join:" " }}</td></tr>{% endif %}
+                <tr style='display: none'>
+                    <td width=200>Дозволити коментарі:</td>
+                    <td>{{ form.allow_comments }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input value=" Змінити " type="submit"></td>
+                </tr>
+            </table>
+        </div>
+    </form>
+{% endblock %}
+{% block right %}{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load texts %}
+
+{% block title %}{{ type|cattextru }} на Публикаторе{% endblock %}
+
+{% block menu %}
+    {% include "_menu.html" %}
+{% endblock %}
+
+{% block fullwidth %}
+
+
+    <h1>{{ type|cattextru }}</h1>
+    {% for t in texts %}
+        <div style='margin-bottom: 9px;'>
+            {% ifchanged %}
+                <div style='border-bottom: 1px solid #c3c3c3; margin-bottom: 3px; {% if not forloop.first %}padding-top: 12px;{% endif %} color: #999; font-weight: bold;'>{{ t.submit_date|date:"d.m.y" }}</div>{% endifchanged %}
+            <div style='margin-bottom: 2px;'><a style='font-size: 17px;'
+                                                href="{{ t.get_absolute_url }}">{{ t.get_title }}</a> &nbsp; <span
+                    style='font-size: 12px;'>{{ t.type|cattextru }}, {{ t.user.get_profile.get_name|striptags }}</span>
+            </div>
+            {% if t.annotation %}
+                <div style='font-size: 11px;'>{{ t.annotation }}</div>{% endif %}
+        </div>
+    {% endfor %}
+    <div class=spacer></div>{% paginator %}
+    </table>
+
+
+
+{% endblock %}
+{% block right %}{% endblock %}

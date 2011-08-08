@@ -1,0 +1,23 @@
+{% extends "users/profile_menu.html" %}
+
+{% load texts %}
+{% load html %}
+
+{% block profile_page %}
+    <table cellpadding="0" cellspacing="0" width="500px">
+        <tr>
+            <td><h2>Улюблені твори:</h2></td>
+        </tr>
+
+        {% for text in texts %}
+        <tr>
+            <td style="padding-top:10px">
+                <a style='color:black; text-decoration: none;'
+                   href="{{ text.user.get_profile.get_url }}">{{ text.user.get_profile.get_name }}</a>
+                &laquo;<a href="{{ text.get_absolute_url }}">{{ text.get_title|striptags }}</a>&raquo;
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

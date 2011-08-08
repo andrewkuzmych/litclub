@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load texts %}
+{% load html %}
+
+{% block main %}
+
+    <style type="text/css">
+        #id_body {
+            width: 100%;
+        }
+
+        #id_theme {
+            width: 100%;
+        }
+    </style>
+
+    <form method=post action=/messages/spam/send/do>
+        <div id="content-margin">
+            <table>
+                <tr>
+                    <td colspan=2><h1>Надіслати повідомлення усім користувачам</h1></td>
+                </tr>
+                <tr>
+                    <td colspan=2>
+                        <div class=spacer></div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td align="right">Надсилати приватні повідомлення:</td>
+                    <td><input type="checkbox" name="is_send_message" checked></td>
+                </tr>
+                <tr>
+                    <td align="right">Надсилати email:</td>
+                    <td><input type="checkbox" name="is_send_email"></td>
+                </tr>
+
+                <tr>
+                    <td align="right">Тема:</td>
+                    <td>{{ form.theme }}</td>
+                </tr>
+                {% if form.theme.errors %}
+                <tr>
+                    <td></td>
+                    <td class=error>{{ form.theme.errors|join:" " }}</td>
+                </tr>
+                {% endif %}
+
+                <tr>
+                    <td align="right" style="vertical-align:top">Повідомлення:</td>
+                    <td>{{ form.body }}</td>
+                </tr>
+                {% if form.body.errors %}
+                <tr>
+                    <td></td>
+                    <td class=error>{{ form.body.errors|join:" " }}</td>
+                </tr>
+                {% endif %}
+
+                <tr>
+                    <td></td>
+                    <td><input value=" Надіслати " type="submit"></td>
+                </tr>
+            </table>
+        </div>
+    </form>
+
+{% endblock %}
+{% block right %}{% endblock %}

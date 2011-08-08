@@ -1,0 +1,31 @@
+<html>
+<head>
+    <title>{% block title %}Публикатор{% endblock %}</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <link href="{{ MEDIA_URL }}css/main_002.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<style>
+    .lightlogo a, .lightlogo a:link, .lightlogo a:visited, .lightlogo a:active, .lightlogo {
+        color: #ccc;
+        font-size: 11px;
+    }
+</style>
+<div style='position: absolute; top: 30px; left: 50px; width: 169px; text-align: center;' class=lightlogo>
+    <a href="/"><img src="{{ MEDIA_URL }}img/logo-face.gif" border=0 vspace=5 hspace=10><br>
+        на главную
+    </a>
+</div>
+
+
+
+<div style='padding-left: 260px; padding-top: 35px;'>
+    {% ifequal message 2 %} На сайте действуют ограничения.<br><br>Можно добавлять не больше двух текстов в
+        день.{% endifequal %}
+    {% ifequal message 1 %} На сайте действуют ограничения.<br><br>До истечения 30-ти дней со дня регистрации вы не
+        можете добавлять больше одного текста в день.{% endifequal %}
+</div>
+
+</body>
+</html>

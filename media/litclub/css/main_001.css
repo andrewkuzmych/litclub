@@ -1,0 +1,75 @@
+html,body{margin:0; padding:0}
+body { background-color: #ffffff; }
+body, th, td { font:13px Verdana,sans-serif;  }
+img { border:0;  } 
+input { font: 13px Arial, sans-serif; }
+form { margin:0; }
+p {margin:0}
+a {color: #2d77aa; text-decoration: underline;}
+a:hover {text-decoration: underline;}
+a:visited {color: #aa54aa}
+
+h1 { font: 26px Times, serif; margin: 12px 0 0 0;}
+h2 { font: 20px Times, serif; margin: 12px 0 0 0;}
+
+.h1_date { font: 11px Verdana; color: gray; padding-bottom: 12px;}
+
+div#top {height:22px; line-height:22px; margin:0; color: #000; background-color: #eee; font-size: 11px; font-family: Tahoma, serif;}
+div#top_left {float:left;}
+div#top_right {float:right; }
+div#top_right .text {float: left; color: gray;}
+div#top a {display: block; float:left; height: 22px; color:#333; text-decoration: none; margin: 0 10px;}
+div#top a:hover { text-decoration: underline;}
+
+div#header { padding-left:10px; }
+   #logo {color: #333; font: 32px Times, serif; padding-top: 10px; display: block;text-decoration: none; width: 200px; }
+div#menu {padding-left:10px; color: #333; font-size: 16px; font-family: Times, serif; float: left;}
+   #menu ul { display: inline } 
+   #menu li { display: block; float:left; list-style-type:none; padding: 0 24px 0 0;}
+   #menu a {  color: #333; text-align: center; text-decoration: none;}
+   #menu a:hover { text-decoration: underline; } 
+div.line { font-size:1px; height:1px; border-top: 1px solid #ccc; clear: both; }
+
+div#content { margin: 0 24px 24px 24px }
+div#content p{line-height:1.4; text-align: justify;}
+div#content-margin { margin-left: 150px }
+
+div#navigation{background:#B9CAFF}
+div#right{margin: 0 12px}
+div#footer{border-top: 1px solid #333}
+div#footer p{margin:0;padding:5px 10px; font-size: 10px;}
+
+div#wrapper{float:left;width:100%}
+div#content-container{margin: 0 30% 0 0}
+div#right-container{float:left;width:30%;margin-left:-30%}
+div#bottom-container{clear:both;}
+div#bottom{margin:0 24px;}
+div#footer{clear:left;width:100%}
+
+div.message { background-color: #edffed; color: #1e5b1e; padding: 3px 10px; margin: 12px 0; }
+
+div.comment { padding: 6px 0 }
+div.comment .header { background-color: #eee; padding: 0px; margin: 0px; text-align: left;}
+div.comment .info { padding: 0 10px;}
+div.comment small { font-size: 11px; }
+.userpic { border: 1px solid gray; padding: 0px; vertical-align: bottom; }
+div.comment .text { font-size: 12px; margin-bottom: 3px; }
+
+div#qr { width: 400px;}
+div#qr label { font-size: 11px; }
+.error { font: 11px/.8em Verdana, sans-serif; color: red; padding-bottom: 9px; }
+.spacer { height: 9px; font-size: 9px; }
+
+.list { }
+.list td { vertical-align: bottom; }
+.list .date { color: gray; width: 1px; font-size: 11px; text-align: right; padding-right: 12px; }
+.list .title { padding-left: 12px; padding-right: 12px; }
+.list .type { font-size: 11px; color: gray; padding-left: 12px; }
+.list .user { font-size: 12px;  }
+.list .user_s { font-size: 11px;  }
+.list h1 { margin-top: 36px; margin-bottom: 6px; }
+.list .header { font-size: 11px; color: gray; font-weight: bold; text-align: center; border-bottom: 1px solid gray; background-color: #f6f6f6; }
+.list .odd { background-color: #fafafa; }
+
+.right_top { margin-top: 6px;  margin-bottom: 6px;}
+.right_top li { font-size: 11px; margin: 2px 0; }

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load texts %}
+
+{% block title %}Авторы Публикатора{% endblock %}
+
+{% block menu %}
+    {% include "_menu.html" %}
+{% endblock %}
+
+
+{% block fullwidth %}
+    <style>
+        .users td {
+            vertical-align: top;
+        }
+    </style>
+    <h1>Авторы</h1>
+    <p>На этой странице все авторы, добавившие на Публикатор не менее трех произведений. (Количество произведений в
+        скобках.)</p>
+    <table width=100% class=users>
+        <tr>
+            <td width=50%>
+                {% for g in groups %}
+                    {% if not g.column2 %}
+                        <h2 style='margin-bottom: 3px;'>{{ g.fl }}</h2>
+                        <div>
+                            {% for u in g.users %}
+                                <div style='margin: 0 0 4px 0px'><a
+                                        href="/users/profile/{{ u.username }}/">{{ u.name }}</a> ({{ u.texts }})
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </td>
+            <td>
+                {% for g in groups %}
+                    {% if g.column2 %}
+                        <h2 style='margin-bottom: 3px;'>{{ g.fl }}</h2>
+                        <div>
+                            {% for u in g.users %}
+                                <div style='margin: 0 0 4px 0px'><a
+                                        href="/users/profile/{{ u.username }}/">{{ u.name }}</a> ({{ u.texts }})
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+
+{% endblock %}
+{% block right %}{% endblock %}

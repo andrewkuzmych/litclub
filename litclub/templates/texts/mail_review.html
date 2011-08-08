@@ -1,0 +1,40 @@
+{% autoescape off %}
+    <html>
+    <head>
+        {% load texts %}
+        {% load html %}
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <style>
+            body {
+                background-color: #ffffff;
+            }
+
+            body, th, td {
+                font: 13px Arial, sans-serif;
+                color: black;
+            }
+
+            h1, h2, h3 {
+                margin-bottom: .1em;
+            }
+
+            p {
+                margin-top: .1em;
+            }
+        </style>
+    </head>
+    <body>
+    {% if author %}{% else %}{% endif %}
+    <p>Привіт, {{ text.user }}!</p>
+
+    <p>Користувач <a href="http://litclub.org.ua{{ review.user.get_profile.get_url|striptags }}/"
+                     target=_lc>{{ review.user.get_profile.get_name|striptags }}</a> написав рецензію «<a
+            href="http://litclub.org.ua{{ review.get_absolute_url }}">{{ review.get_title }}</a>» на ваш твір «<a
+            href="http://litclub.org.ua{{ text.get_absolute_url }}">{{ text.get_title }}</a>».
+
+    <hr width="100%" noshade color="#e0e0e0">
+    <p><a href=http://litclub.org.ua/ target=_lc>Літклуб</a></p>
+
+    </body>
+
+{% endautoescape %}

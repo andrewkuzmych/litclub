@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load texts %}
+{% load html %}
+
+{% block main %}
+
+    <div>
+        На сайті діють обмеження - не більше {{ publication_limit }} творів за добу.
+        <br> Будь ласка спробуйте завтра.
+    </div>
+
+{% endblock %}
+{% block right %}{% endblock %}

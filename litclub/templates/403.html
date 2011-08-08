@@ -1,0 +1,13 @@
+{% extends "error.html" %}
+{% block title %}Публикатор 403{% endblock %}
+
+{% block main %}
+    <div class=medium>
+        <h1>Вам сюда нельзя</h1>
+
+        <div style='width: 700px;'>
+            Сайт решил, что у вас недостаточно прав для использования этой страницы. Говорят, может помочь <a
+                href="/users/login/">зайти на сайт</a> под своим логином.
+        </div>
+    </div>
+{% endblock %}

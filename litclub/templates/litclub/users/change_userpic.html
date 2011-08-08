@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block main %}
+    <form method=post action="/users/change_userpic/" enctype="multipart/form-data" >
+    <div id="content-margin">
+        <table>
+            <tr>
+                <td></td>
+                <td><h1>Зміна юзерпіку 123</h1></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    <div class=spacer></div>
+                    {% if user.get_profile.userpic %}
+                        <img class=userpic src="{{ user.get_profile.get_userpic_url }}" alt="" class=userpic>
+                    {% else %}
+                        <img src="http://media.litclub.org.ua/media/userpics/nos" width=48 height=48 alt="" class=userpic>
+                    {% endif %}
+                    <div class=spacer>
+                    </div></td></tr>
+            <tr>
+                <td width=200>Юзерпік {% if form.data.userpic %}<img src="{{ userpic.get_cover_url }}">{% endif %}</td>
+                <td>{{ form.userpic }} {{ form.userpic_file }}</td></tr>
+            {% if form.userpic_file.errors %}
+                <tr>
+                <td></td>
+                <td class=error>{{ form.userpic_file.errors|join:" " }}</td></tr>{% endif %}
+
+            <tr>
+                <td></td>
+                <td><input value=" Змінити " type="submit"></td>
+            </tr>
+        </table>
+    </div>
+    </form>
+{% endblock %}
+{% block right %}{% endblock %}

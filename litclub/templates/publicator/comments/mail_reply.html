@@ -1,0 +1,63 @@
+{% autoescape off %}
+    <html>
+    <head>
+        {% load texts %}
+        {% load html %}
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <style>
+            body {
+                background-color: #ffffff;
+            }
+
+            body, th, td {
+                font: 13px Arial, sans-serif;
+                color: black;
+            }
+
+            h1, h2, h3 {
+                margin-bottom: .1em;
+            }
+
+            p {
+                margin-top: .1em;
+            }
+        </style>
+    </head>
+    <body>
+    {% if author %}{% else %}{% endif %}
+    <p>
+        Здравствуйте, {% if parent %}{% if author %}{{ obj.user.get_profile.get_name|striptags }}{% else %}{{ parent.name|striptags }}{% endif %}{% else %}{{ obj.user.get_profile.get_name|striptags }}{% endif %}
+        !</p>
+    <p>Пользователь {% if comment.user %}<a
+            href="http://publicator.org.ua/users/profile/{{ comment.user.get_profile.get_name }}/"
+            target=_lc>{{ comment.user.get_profile.get_name|striptags }}{% else %}{{ comment.name|striptags }}{% endif %}</a>
+
+        {% if parent %}{% if author %}ответил на <a
+                href="http://publicator.org.ua{{ obj.get_absolute_url }}#comment{{ parent.id }}"
+                target=_lc>комментарий</a> {{ parent.name|striptags }} к вашему произведению{% else %}ответил на ваш <a
+                href="http://publicator.org.ua{{ obj.get_absolute_url }}#comment{{ parent.id }}"
+                target=_lc>комментарий</a>{% endif %}:{% else %}
+            написал комментарий к вашему <a href=http://publicator.org.ua{{ obj.get_absolute_url }}>произведению</a>
+            :{% endif %}
+    </p>
+
+    <blockquote
+            style="border-left:#000040 2px solid;margin-left:0px;margin-right:0px;padding-left:15px;padding-right:0px">{{ comment.comment|linebreaksp }}</blockquote>
+    <p><a href="http://publicator.org.ua{{ obj.get_absolute_url }}#comment{{ comment.id }}" target=_lc>Ответить
+        ему &rarr;</a></p>
+    <p>{% if parent %}{% if author %}Комментарий {{ parent.name|striptags }}{% else %}Ваш
+        комментарий{% endif %}{% else %}Ваше произведение{% endif %}:</p>
+    <blockquote
+            style="border-left:#000040 2px solid;margin-left:0px;margin-right:0px;padding-left:15px;padding-right:0px">{% if parent %}{{ parent.comment|striptags|linebreaksp|safe }}{% else %}
+        <h3>{{ obj.get_title|striptags }}</h3>{{ obj.text|striptags|linebreaksp|safe }}{% endif %}</blockquote>
+    <hr width="100%" noshade color="#e0e0e0">
+    <p><a href=http://publicator.org.ua/ target=_pub>Публикатор</a></p>
+
+    <p>
+        <small>Кстати, комментарии почтой можно и не получать. Это настраивается в <a
+                href=http://publicator.org.ua/users/change_profile/>профиле</a>.
+        </small>
+    </p>
+    </body>
+
+{% endautoescape %}
