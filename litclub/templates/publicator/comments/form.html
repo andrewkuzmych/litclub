@@ -1,0 +1,72 @@
+<style>
+    #qr {
+        margin-top: 9px;
+        margin-bottom: 9px;
+    }
+
+    #qr .text {
+        border: 1px solid gray;
+    }
+</style>
+
+<div id="qr" style='display: none;'>
+    <form action="/comments/add/" method=post>
+        <input type=hidden id="parent" name=parent value="0">
+        <input type=hidden name=target value="{{ content_id }}:{{ obj_id }}">
+
+        {% if not user.is_authenticated %}
+            <table>
+                <tr>
+                    <td>Имя</td>
+                    <td><input class=text type=text name="name" value="" size=25></td>
+                </tr>
+                <tr>
+                    <td>E-mail</td>
+                    <td><input class=text type=text name=email value="" size=25></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <small>На сайте отображаться не будет.<br>Сюда будут посланы ответы на комментарий.<br><br>
+                        </small>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Число</td>
+                    <td><input class=text type=text name=captcha_text value="" size=6></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img id="captcha_img">
+
+                        <div id="captcha_img_label" style='display: none'>
+                            <small>Картинка с числом загружается...</small>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <input type=hidden name=captcha_sid id="captcha_sid" value="{{ sid }}">
+            <br>
+            Текст комментария:
+            {% else %}
+            <table cellpadding=0 cellspacing=0>
+                <tr>
+                    <td>
+                        {% if user.get_profile.get_userpic_url %}<img src="{{ user.get_profile.get_userpic_url }}s"
+                                                                      alt="" class=userpic>{% else %}<img
+                                src="http://media.litclub.org.ua/userpics/nos" width=48 height=48 alt=""
+                                class=userpic>{% endif %}
+                    </td>
+                    <td>
+                        <div style='padding-left: 9px;'><b>{{ user.get_profile.username }}</b></div>
+                    </td>
+                </tr>
+            </table>
+        {% endif %}
+        <textarea name=comment rows="10"
+                  style='width:100%; border: 1px solid gray; font: 13px Verdana, sans-serif; padding: 3px; margin-top: 3px;'
+                  wrap="soft"></textarea><br>
+        <input value=" Добавить " type="submit">
+    </form>
+</div>

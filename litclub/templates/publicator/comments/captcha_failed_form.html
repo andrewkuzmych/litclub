@@ -1,0 +1,21 @@
+Число, что вы ввели, не совпало с числом на картинке. Попробуйте еще раз.<br><br>
+<form action="/comments/add/" method=post>
+    <input type=hidden id="parent" name=parent value="{{ form.parent }}">
+    <input type=hidden name=target value="{{ form.target }}">
+    <input type=hidden name=comment value="{{ form.comment }}">
+    <input type=hidden name="name" value="{{ form.name }}">
+    <input type=hidden name=email value="{{ form.email }}">
+
+    <table>
+        <tr>
+            <td>Число</td>
+            <td><input type=text name=captcha_text value="" size=6></td>
+        </tr>
+    </table>
+    <img src="/captcha/{{ sid }}.gif" id="captcha_img"><br>
+
+    <input type=hidden name=captcha_sid id="captcha_sid" value="{{ sid }}">
+
+
+    <input value=" Теперь правильно " type="submit">
+</form>

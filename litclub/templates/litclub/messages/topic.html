@@ -1,0 +1,86 @@
+{% extends "users/profile_menu.html" %}
+
+{% load texts %}
+{% load html %}
+
+{% block profile_page %}
+    <table cellpadding="0" cellspacing="0" width="500px">
+        <tr>
+            <td colspan=2>
+                <h2>{{ topic.theme }}</h2>
+                <div class=spacer></div>
+                ( Між Вами та
+                {% ifequal u.user topic.user2 %}
+                    <a href="{{ topic.user1.get_profile.get_url }}">{{ topic.user1.get_profile.get_name }}</a>
+                {% else %}
+                    <a href="{{ topic.user2.get_profile.get_url }}">{{ topic.user2.get_profile.get_name }}</a>
+                {% endifequal %})
+            </td>
+        </tr>
+        <tr>
+            <td colspan=2>
+                <div class=spacer></div>
+            </td>
+        </tr>
+        <tr> <td colspan=2> <hr> </td> </tr>
+
+        {% for message in messagesList %}
+            <tr>
+                <td style="vertical-align:top">
+                    {% if message.user_from.get_profile.get_userpic_url %}
+                        <img src="{{ message.user_from.get_profile.get_userpic_url }}s" alt="" class=userpic>
+                    {% else %}
+                        <img src="http://media.litclub.org.ua/media/userpics/nos" width=48 height=48 alt="" class=userpic>
+                    {% endif %}
+                </td>
+                <td style="vertical-align:top">
+                    <table>
+                        <tr>
+                            <td style="vertical-align:top">
+                                <div>
+                                    <a href="{{ message.user_from.get_profile.get_url }}">{{ message.user_from.get_profile.get_name }}</a>
+                                    <small>({{ message.sent_on }})</small>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align:top">
+                                <div style="padding-top:5px;" class=text>{{ message.body|linebreaksp|safe }}</div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr> <td colspan=2> <hr style=""> </td> </tr>
+        {% endfor %}
+
+        <tr>
+            <td colspan=2>
+                <div class=spacer></div>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top">
+                Відповісти:
+            </td>
+            <td>
+                <form method=post action=/messages/reply/do>
+                    {{ form.body }}
+                    <br>
+                    <input value=" Відповісти " type="submit">
+                    {{ form.topicId }}
+                </form>
+            </td>
+        </tr>
+
+        {% if form.body.errors %}
+            <tr>
+                <td></td>
+                <td class=error>{{ form.body.errors|join:" " }}</td>
+            </tr>
+        {% endif %}
+
+    </table>
+
+{% endblock %}

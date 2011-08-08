@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+{% load texts %}
+{% load html %}
+{% load comments %}
+
+{% block title %}{{ text.get_title|striptags }} —  {{ text.user.get_profile.get_name }}{% endblock %}
+
+{% block main %}
+    <h1>{{ text.get_title|striptags }}</h1>
+
+    {% if text.can_change %}
+        <div style='float: right; border: 1px solid green; padding: 6px; margin: 0 0 12px 12px'>
+            <a href=/texts/change/{{ text.id }}/>редактировать</a>
+            <a href="/texts/delete/{{ text.id }}/" onclick="return confirm('Действительно стереть?')"
+               title="Стерти текст" style='color: #c00'>стереть</a>
+        </div>
+    {% endif %}
+
+    <!--
+{% ifequal text.type 5 %}
+{% if text.related %}
+  <div style='margin-bottom: 12px; background-color: #f5f5f5; padding: 3px 6px;'>Рецензія на твір «<a href="{{ text.related.get_absolute_url }}">{{ text.related.title }}</a>» автора <a href="{{ text.related.user.get_profile.get_url }}">{{ text.related.get_profile.get_name }}</a></div>
+{% endif %}
+{% endifequal %}
+-->
+
+    <div style='text-align: justify;' id=text>{{ text.text|some_html|safe|linebreaksp|safe }}</div>
+
+    <div class=spacer></div>
+    <b>{{ text.submit_date|date:"d.m.Y" }}</b>
+    <div class=spacer></div>
+    <a href=#comments>Читать комментарии</a> ({{ text.comments_count }})
+    <div class=spacer></div>
+    <div class=spacer></div>
+
+    <style>
+        table.rating {
+            border-collapse: collapse;
+            border-spacing: 0;
+            border-color: #ccc
+        }
+
+        table.rating td, table.rating th {
+            padding: 3px 9px;
+        }
+
+        table.rating th {
+            text-align: center;
+            font-size: 12px;
+            border-bottom: 1px solid #ccc
+        }
+    </style>
+    <table class=rating border=0>
+        <tr>
+            <th style='border-right: 1px solid #ccc'>Рейтинг
+            </th>
+            {% if text.can_rate %}
+                <th style='border-right: 1px solid #ccc'>Оценить</th>
+            {% endif %}
+            <th>Оценили
+            </th>
+        </tr>
+        <tr>
+            <td width=80
+                style='vertical-align: middle; font-size: 30px; text-align: center; border-right: 1px solid #ccc'>
+                {{ text.rating }}
+            </td>
+            {% if text.can_rate %}
+                <td width=80 style='vertical-align: middle; text-align: center; border-right: 1px solid #ccc'><span
+                        style='font-size: 36px; font-weight: bold;'><a style='color: #0a0; text-decoration: none;'
+                                                                       href="?rate=plus">+</a> <a
+                        style='color: #a00; text-decoration: none;' href="?rate=minus">&minus;</a></span>
+                </td>
+            {% endif %}
+            <td style='vertical-align: top;'>
+                {% if text.vote_set.all %}
+                    {% for vote in text.vote_set.all %}<a href='{{ vote.user.get_profile.get_url }}'
+                                                          style='color: {% ifequal vote.value 1 %}#0a0{% else %}#a00{% endifequal %}'>{{ vote.user.get_profile.get_name|striptags }}</a>{% if not forloop.last %}
+                        ,{% else %}.{% endif %} {% endfor %}
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+
+
+{% endblock %}
+{% block right %}
+    <table bgcolor=#F0F5F7 border=0 cellspacing=0 cellpadding=0 width=100% height=100%>
+        <tr>
+            <td><img src="{{ MEDIA_URL }}img/z.png" width=1 height=10></td>
+        </tr>
+        <tr bgcolor=#76A8B6>
+            <td width=100%>
+                <div class=wcol>{{ text.user.get_profile.get_name }}</div>
+            </td>
+        </tr>
+        <tr>
+            <td height=100% valign=top>
+                <div class=bcol>
+                    <a href="{{ text.user.get_profile.get_url }}">{% if text.user.get_profile.get_userpic_url %}<img
+                            class=userpic src="{{ text.user.get_profile.get_userpic_url }}" alt=""
+                            class=userpic>{% else %}<img src="http://media.litclub.org.ua/userpics/nos" width=48
+                                                         height=48 alt="" class=userpic>{% endif %}</a>
+                    <div class=spacer></div>
+                    <a href="{{ text.user.get_profile.get_url }}">Смотреть инфо &raquo;</a>
+
+                    <div class=spacer></div>
+                    {% regroup text.user.get_profile.get_texts by type as grouped %}
+                    {% for group in grouped %}
+                        <b>{{ group.grouper|cattextru }}</b>
+                        <div style='margin: 3px 0 12px 20px; padding: 0;'>
+                            {% for t in group.list %}
+                                <div style='margin-bottom: 4px; text-align: left;'><a
+                                        href="{{ t.get_absolute_url }}">{{ t.get_title|striptags }}</a></div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
+                </div></td>
+        </tr>
+    </table>
+{% endblock %}
+
+
+{% block bottom %}
+    {% get_comment_list for texts.text text.id as comments %}
+
+    <div class=spacer></div>
+    <div class=line></div>
+    <div id="bottom-container">
+        <div id="bottom">
+
+            {% if text.related_text.all %}
+                <h2>Рецензії</h2>
+                <table width=100%>
+                    {% for review in text.related_text.all %}
+                        <tr>
+                            <td width=50 style='vertical-align: top;'>
+                                <div style='padding-top: 3px;'>{% if review.user.get_profile.get_userpic_url %}<img
+                                        src="{{ review.user.get_profile.get_userpic_url }}s" alt=""
+                                        class=userpic>{% else %}<img src="http://media.litclub.org.ua/userpics/nos"
+                                                                     width=48 height=48 alt="" class=userpic>{% endif %}
+                                </div>
+                            </td>
+                            <td style='vertical-align: top;'>
+                                <div>
+                                    <div><a href="{{ review.get_absolute_url }}"
+                                            style='font-size: 18px; font-family: Times;'>{{ review.get_title }}</a>
+                                        <span style='color: gray;'> — {{ review.user.get_profile.get_name|striptags }}, {{ review.submit_date|date:"d.m.Y" }}</span>
+                                    </div>
+                                    <div style='font-size: 11px; margin-top: 2px;'>{{ review.text|truncatewords_html:70|some_html|linebreaksp|safe }}</div>
+                                </div>
+                            </td></tr>
+                        <td colspan=2>
+                            <div style='font-size: 1px; line-height: 1px; border-top: 1px lightgray solid; margin: 6px 0;'>
+                        </td>
+                    {% endfor %}
+                </table>
+            {% endif %}
+
+            <a name="comments"></a>
+
+            <div style='background-color: #AAD5E7; padding: 1px 0px;'>
+                <div class="wcol">КОММЕНТАРИИ</div>
+            </div>
+
+            {% get_comment_form for texts.text text.id user request.user %}
+
+            {% for c in comments %}
+                <a name="comment{{ c.id }}"></a>
+                {% if c.is_removed %}
+                    {% if not c.last %}
+                        <div class=comment style='margin-left: {{ c.ident }}px;'>
+                            <b>(стертий коментар)</b>
+
+                            <div class=spacer></div>
+                        </div>
+                    {% endif %}
+                    {% else %}
+                    <div class=comment style='margin-left: {{ c.ident }}px'>
+                        <table class=header width=100%>
+                            <tr>
+                                <td>{% ifequal c.usertype 1 %}{% if c.user.get_profile.get_userpic_url %}<img
+                                        src="{{ c.user.get_profile.get_userpic_url }}s" alt="" class=userpic>{% else %}
+                                <img src="http://media.litclub.org.ua/userpics/nos" width=48 height=48 alt=""
+                                     class=userpic>{% endif %}{% endifequal %}</td>
+                                <td width=100% class=info>
+                                    {% ifequal c.usertype 1 %}<a
+                                            href="{{ c.user.get_profile.get_url }}">{{ c.user.get_profile.get_name }}</a>{% endifequal %}
+                                    {% ifequal c.usertype 2 %}{% if c.name %}{{ c.name }}{% else %}
+                                        Анонім{% endif %}{% endifequal %}
+                                    <br>
+                                    <small>{{ c.submit_date }} {% if user.is_staff %}({{ c.ip_address }}
+                                        ){% endif %}</small>
+                                </td>
+                                <td style='text-align: right; padding-right: 6px; vertical-align: top; font-size: 24px;'>{% if c.can_delete %}
+                                    <a href="/comments/delete/{{ c.id }}/" title="Стерти коментар"
+                                       onclick="return confirm('Справді стерти?')"
+                                       style='color: #ce5347; text-decoration: none;'>&times;</a>{% endif %}</td>
+                            </tr></table>
+                        <div class=text>{{ c.comment|some_html|safe|linebreaksbr }}</div>
+                        <a onclick="quickReply('{{ c.id }}'); return false;"
+                           style='color: gray; text-decoration: none; font-size: 11px;' href=".">(ответить)</a>
+
+                        <div id="qr{{ c.id }}" style='margin-left: 50px;'></div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            <div style='margin:12px 0 24px 0;'><a onclick="quickReply('b'); return false;"
+                                                  style='text-decoration: none; font-size: 18px; color: gray; border-bottom: 1px solid gray;'
+                                                  href=".">Написать комментарий</a>
+
+                <div id="qrb" style=""></div>
+            </div>
+
+        </div></div>
+
+{% endblock %}
+

@@ -1,0 +1,39 @@
+{% extends "users/profile_menu.html" %}
+
+{% load texts %}
+{% load html %}
+
+{% block profile_page %}
+    <table cellpadding="0" cellspacing="0" width="500px">
+        <tr>
+            <td><h2>Ваша підписка на наступних авторів:</h2></td>
+        </tr>
+
+        {% for subscriptionDto in subscription_command %}
+        <tr>
+            <td style="padding-top:10px">
+                <a href="{{ subscriptionDto.publisher.get_profile.get_url }}">
+                    {{ subscriptionDto.publisher.get_profile.get_name|striptags }}
+                </a>
+                <b>({{ subscriptionDto.new_texts.count }})</b>
+                <div style="padding-left:20px">
+                    {% if subscriptionDto.new_texts %}
+                        {% regroup subscriptionDto.new_texts by type as grouped %}
+                        {% for group in grouped %}
+                            {{ group.grouper|cattext }}
+                            <div style="padding-left:20px">
+                                {% for t in group.list %}
+                                <div>
+                                    <a href="{{ t.get_absolute_url }}">{{ t.get_title|striptags }}</a>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

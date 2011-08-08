@@ -1,0 +1,62 @@
+{% extends "users/profile_menu.html" %}
+
+{% load texts %}
+{% load html %}
+
+{% block profile_page %}
+    
+    <table style="border:1px solid White;" cellpadding="0" cellspacing="0">
+    <tbody style="vertical-align:top">
+        <tr>
+            <td colspan="3">
+                <h2>Приватні повідомлення:</h2>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div class=spacer></div>
+                <div class=spacer></div>
+            </td>
+        </tr>
+
+        {% for topicDto in messages_command %}
+        <tr>
+            <td style="vertical-align:top">
+                {% if topicDto.companion.get_profile.get_userpic_url %}
+                    <img src="{{ topicDto.companion.get_profile.get_userpic_url }}s" alt="" class=userpic>
+                {% else %}
+                    <img src="http://media.litclub.org.ua/media/userpics/nos" width=48 height=48 alt="" class=userpic>
+                {% endif %}
+            </td>
+
+            <td style="padding-left:10px;width:275px">
+                <a href="{{ topicDto.companion.get_profile.get_url }}">{{ topicDto.companion.get_profile.get_name }}</a>
+                <br><span style="font-size:9px;">({{ topicDto.topic.get_last_message.sent_on }})</span>
+            </td>
+
+            <td style="width:700px; border:1px solid White;">
+                <a href="/messages/topic/{{ topicDto.topic.id }}">{{ topicDto.topic.theme }}</a>
+
+                {% ifnotequal topicDto.not_read_messages_count 0 %}
+                    <b>({{ topicDto.not_read_messages_count }})</b>
+                {% endifnotequal %}
+
+                <br>
+                {{ topicDto.topic.get_last_message.body|linebreaksp|safe }}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3"><hr></td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan=3>
+                <div class=spacer></div>
+                <center>{% paginator %}</center>
+            </td>
+        </tr>
+
+    </tbody>
+    </table>
+
+{% endblock %}

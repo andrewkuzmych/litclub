@@ -1,0 +1,334 @@
+{% extends "base.html" %}
+{% load texts %}
+{% load html %}
+{% load comments %}
+{% block main %}
+
+<style type="text/css">
+    div#content p:first-letter {margin-left: 2em;}
+    img.favorite{border:0px;}
+</style>
+    
+<script type="text/javascript" src="http://vkontakte.ru/js/api/share.js?10" charset="windows-1251"></script>
+
+<script type="text/javascript" src="{{ MEDIA_URL }}tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript">
+    // init tinyMCE
+    tinyMCE.init({
+        mode : "none",
+        content_css : "{{ MEDIA_URL }}css/main_001.css",
+        theme : "simple",
+        setup : function(ed) {
+            ed.onKeyPress.add(function(ed, e) {
+                getKeystroke(e);
+            });
+        }
+    });
+
+    // process key pressing in tinyMCE
+    function getKeystroke(e) {
+        var keynum = e.keyCode ? e.keyCode : e.which;
+
+        /* only interested in CTRL */
+        if (e.ctrlKey == 1) {
+            /* enter key and fix for chrome*/
+            if(keynum == 13 || keynum == 10){
+                document.getElementById("add_comment_form").submit();
+            }
+        }
+    }
+</script>
+
+<script type="text/javascript">
+
+    function quickReply(id) {
+        tinyMCE.execCommand('mceRemoveControl', false, 'comment');
+
+        qrForm = document.getElementById('qr');
+        qrForm.style.display = '';
+        parentId = document.getElementById('parent');
+        parentId.value = id;
+        if (id == 'b' || id == 't') {
+            parentId.value = 0
+        } else {
+            parentId.value = id
+        }
+        document.getElementById('qr' + id).appendChild(qrForm);
+
+        // loads captcha
+        captcha = document.getElementById('captcha_img');
+        if (captcha) {
+            if (!captcha.src) {
+                captcha.src = "/captcha/" + document.getElementById('captcha_sid').value + ".gif";
+                document.getElementById('captcha_img_label').style.display = '';
+                captcha.onload = function(e) {
+                    document.getElementById('captcha_img_label').style.display = 'none';
+                };
+            }
+        }
+
+        tinyMCE.execCommand('mceAddControl', false, 'comment');
+    }
+</script>
+
+    <div class=spacer></div>
+    <index>
+
+        <table align="right" border="0" cellpadding="0" cellspacing="0" style="height:0%;padding-top:5px;padding-right:20px">
+            <tr>
+                <td valign="top">
+                    {% if is_favorite_enabled %}
+                        <div align="right" style="padding-right:5px">
+                        {% if is_favorite %}
+                             <a href="/texts/favorite/remove/{{ text.id }}">
+                                <img src="{{ MEDIA_URL }}images/favorite/remove_favorite.png" class="favorite" width="30" height="25"
+                                     alt="Видалити з улюбленого" title="Видалити з улюбленого"/>
+                            </a>
+                        {% else %}
+                            <a href="/texts/favorite/add/{{ text.id }}">
+                                <img src="{{ MEDIA_URL }}images/favorite/add_favorite.png" class="favorite" width="30" height="25"
+                                     alt="Додати в улюблене" title="Додати в улюблене"/>
+                            </a>
+                        {% endif %}
+                        </div>
+                    {% endif %}
+                </td>
+                <td valign="top">
+                     <!-- Put this script tag to the place, where the Share button will be -->
+                    <div align="right">
+                    <script type="text/javascript">
+                        document.write(VK.Share.button({
+                            url: 'http://litclub.org.ua{{ text.get_absolute_url }}',
+                            title: '{{ text.get_title|striptags }} ( {{ text.user.get_profile.get_name|striptags }} )',
+                            description: 'Літклуб, найкращий осередок талановитих авторів',
+                            image: '{{ MEDIA_URL }}images/logo_vk.png',
+                            noparse: true
+                        }, {type: "custom", text: "<img src=\"http://vk.com/images/vk32.png?1\" width=\"25\" height=\"25\" class=\"favorite\" title=\"Send to VK\" />"}));
+                    </script>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+
+
+        <h1>{{ text.get_title|striptags }}</h1>
+
+        <div class=h1_date>
+            <b>{{ text.user.get_profile.get_name|striptags }}</b>, {{ text.submit_date|date:"d.m.Y року" }}</div>
+
+        {% ifequal text.type 5 %}
+            {% if text.related %}
+                <div style='margin-bottom: 12px; background-color: #f5f5f5; padding: 3px 6px;'>Рецензія на твір «<a
+                        href="{{ text.related.get_absolute_url }}">{{ text.related.get_title }}</a>» автора <a
+                        href="{{ text.related.user.get_profile.get_url }}">{{ text.related.get_profile.get_name }}</a>
+                </div>
+            {% endif %}
+        {% endifequal %}
+
+        {% if text.can_change %}
+            <div style='float: right; border: 1px solid green; padding: 6px; margin: 0 0 12px 12px'>
+                <a href=/texts/change/{{ text.id }}/>редагувати</a>
+                <a href="/texts/delete/{{ text.id }}/" onclick="return confirm('Действительно стереть?')"
+                   title="Стерти текст" style='color: #c00'>стерти</a>
+            </div>
+        {% endif %}
+
+        {{ text.text|linebreaksp|safe }}
+
+    </index>
+
+    <div class=spacer></div>
+    <div class=spacer></div>
+    <a href=#comments>Читати коментарі</a> ({{ text.comments_count }})
+    <div class=spacer></div>
+    <div class=spacer></div>
+
+    <style>
+        table.rating {
+            border-collapse: collapse;
+            border-spacing: 0;
+            border-color: #ccc
+        }
+
+        table.rating td, table.rating th {
+            padding: 3px 9px;
+        }
+
+        table.rating th {
+            text-align: center;
+            font-size: 12px;
+            border-bottom: 1px solid #ccc
+        }
+    </style>
+    <table class=rating border=0>
+        <tr>
+            <th style='border-right: 1px solid #ccc'>Рейтинг</th>
+            {% if text.can_rate %}
+                <th style='border-right: 1px solid #ccc'>Оцінити</th>
+            {% endif %}
+            <th style='border-right: 1px solid #ccc'>Оцінили
+            </th>
+            <th>Переглянули
+            </th>
+        </tr>
+        <tr>
+            <td width=80
+                style='vertical-align: middle; font-size: 30px; text-align: center; border-right: 1px solid #ccc'>
+                {{ text.rating }}
+            </td>
+            {% if text.can_rate %}
+                <td width=80 style='vertical-align: middle; text-align: center; border-right: 1px solid #ccc'><span
+                        style='font-size: 36px; font-weight: bold;'><a style='color: #0a0; text-decoration: none;'
+                                                                       href="?rate=plus">+</a> <a
+                        style='color: #a00; text-decoration: none;' href="?rate=minus">&minus;</a></span>
+                </td>
+            {% endif %}
+            <td style='vertical-align: top; border-right: 1px solid #ccc'>
+                {% if text.vote_set.all %}
+                    {% for vote in text.vote_set.all %}<a href='{{ vote.user.get_profile.get_url }}'
+                                                          style='color: {% ifequal vote.value 1 %}#0a0{% else %}#a00{% endifequal %}'>{{ vote.user.get_profile.get_name|striptags }}</a>{% if not forloop.last %}
+                        ,{% else %}.{% endif %} {% endfor %}
+                {% endif %}
+            </td>
+            <td width=80 style='vertical-align: middle; font-size: 30px; text-align: center; color: gray;'>
+                {{ text.visit_count }}
+            </td>
+        </tr>
+    </table>
+
+
+{% endblock %}
+{% block right %}
+    <h2>{{ text.user.get_profile.get_name }}</h2>
+    <div class=spacer></div>
+    <a href="{{ text.user.get_profile.get_url }}">
+        {% if text.user.get_profile.get_userpic_url %}
+            <img class=userpic src="{{ text.user.get_profile.get_userpic_url }}" alt="" class=userpic>
+        {% else %}
+            <img src="http://media.litclub.org.ua/media/userpics/nos" width=48 height=48 alt="" class=userpic>
+        {% endif %}
+    </a>
+    <div class=spacer></div>
+    <div class=spacer></div>
+    <a href="{{ text.user.get_profile.get_url }}">Дивитися інфо &raquo;</a>
+    <div class=spacer></div>
+    <div class=spacer></div>
+    {% regroup text.user.get_profile.get_texts by type as grouped %}
+    {% for group in grouped %}
+        {{ group.grouper|cattext }}
+        <div style='margin: 3px 0 12px 20px; padding: 0;'>
+            {% for t in group.list %}
+                <div style='margin-bottom: 4px; text-align: left;'><a
+                        href="{{ t.get_absolute_url }}">{{ t.get_title|striptags }}</a></div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+    <div class=spacer></div>
+    <div class=spacer></div>
+{% endblock %}
+
+
+{% block bottom %}
+    {% get_comment_list for texts.text text.id as comments %}
+
+    <div class=spacer></div>
+    <div class=line></div>
+    <div id="bottom-container">
+        <div id="bottom">
+
+            {% if text.related_text.all %}
+                <h2>Рецензії</h2>
+                <table width=100%>
+                    {% for review in text.related_text.all %}
+                        <tr>
+                            <td width=50 style='vertical-align: top;'>
+                                <div style='padding-top: 3px;'>
+                                    {% if review.user.get_profile.get_userpic_url %}
+                                        <img src="{{ review.user.get_profile.get_userpic_url }}s" alt="" class=userpic>
+                                    {% else %}
+                                        <img src="http://media.litclub.org.ua/media/userpics/nos" width=48 height=48 alt="" class=userpic>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td style='vertical-align: top;'>
+                                <div>
+                                    <div><a href="{{ review.get_absolute_url }}"
+                                            style='font-size: 18px; font-family: Times;'>{{ review.get_title }}</a>
+                                        <span style='color: gray;'> — {{ review.user.get_profile.get_name|striptags }}, {{ review.submit_date|date:"d.m.Y" }}</span>
+                                    </div>
+                                    <div style='font-size: 11px; margin-top: 2px;'>{{ review.text|truncatewords_html:70|some_html|linebreaksp|safe }}</div>
+                                </div>
+                            </td></tr>
+                        <td colspan=2>
+                            <div style='font-size: 1px; line-height: 1px; border-top: 1px lightgray solid; margin: 6px 0;'></div>
+                        </td>
+                    {% endfor %}
+                </table>
+            {% endif %}
+
+            {% get_comment_form for texts.text text.id user request.user %}
+            <center style='margin:12px;'>( <a onclick="quickReply('t'); return false;"
+                                              style='text-decoration: none; color: #2d77aa' href=".">написати
+                коментар</a> ) {% if user.is_authenticated %}( <a style='text-decoration: none; color: #2d77aa'
+                                                                  href="/texts/add/5/?related={{ text.id }}">написати
+                рецензію</a> ){% endif %}</center>
+            <div id="qrt" style="margin-left:-200px; padding-left:50%;"></div>
+            <a name="comments"></a>
+            {% for c in comments %}
+                <a name="comment{{ c.id }}"></a>
+                {% if c.is_removed %}
+                    {% if not c.last %}
+                        <div class=comment style='margin-left: {{ c.ident }}px'>
+                            <b>(стертий коментар)</b>
+
+                            <div class=spacer></div>
+                        </div>
+                    {% endif %}
+                    {% else %}
+                    <div class=comment style='margin-left: {{ c.ident }}px'>
+                        <table class=header width=100%>
+                            <tr>
+                                <td>
+                                    {% ifequal c.usertype 1 %}{% if c.user.get_profile.get_userpic_url %}
+                                        <img src="{{ c.user.get_profile.get_userpic_url }}s" alt="" class=userpic>
+                                    {% else %}
+                                        <img src="http://media.litclub.org.ua/media/userpics/nos" width=48 height=48 alt="" class=userpic>
+                                    {% endif %}
+                                    {% endifequal %}
+                                </td>
+                                <td width=100% class=info>
+                                    {% ifequal c.usertype 1 %}<a
+                                            href="{{ c.user.get_profile.get_url }}">{{ c.user.get_profile.get_name }}</a>{% endifequal %}
+                                    {% ifequal c.usertype 2 %}{% if c.name %}{{ c.name }}{% else %}
+                                        Анонім{% endif %}{% endifequal %}
+                                    <br>
+                                    <small>{{ c.submit_date }} {% if user.is_staff %}({{ c.ip_address }}
+                                        ){% endif %}</small>
+                                </td>
+                                <td style='text-align: right; padding-right: 6px; vertical-align: top; font-size: 16px; font-weight: bold;'>{% if c.can_delete %}
+                                    <a href="/comments/delete/{{ c.id }}/" title="Стерти коментар"
+                                       onclick="return confirm('Справді стерти?')"
+                                       style='color: #ce5347; text-decoration: none;'>&times;</a>{% endif %}</td>
+                            </tr></table>
+                        <div class=text>{{ c.comment|safe }}</div>
+                        <a onclick="quickReply('{{ c.id }}'); return false;"
+                           style='color: #2d77aa; text-decoration: none; font-size: 11px;' href=".">(відповісти)</a>
+
+                        <div id="qr{{ c.id }}" style='margin-left: 50px;'></div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% if comments %}
+                <center style='margin:12px;'>
+                    ( <a onclick="quickReply('b'); return false;" style='text-decoration: none; color: #2d77aa' href=".">написати коментар</a> )
+                    {% if user.is_authenticated %}
+                        ( <a style='text-decoration: none; color: #2d77aa' href="/texts/add/5/?related={{ text.id }}">написати рецензію</a> )
+                    {% endif %}
+                </center>
+                <div id="qrb" style="margin-left:-200px; padding-left:50%;"></div>
+            {% endif %}
+        </div></div>
+
+{% endblock %}
+

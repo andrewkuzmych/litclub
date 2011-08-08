@@ -1,0 +1,31 @@
+{% extends "users/profile_menu.html" %}
+
+{% load texts %}
+{% load html %}
+
+{% block profile_page %}
+
+    {% if u.about %}
+        <br>
+        {{ u.about|some_html|safe|linebreaksbr }}
+        <div class=spacer></div>
+    {% endif %}
+
+    <h2>Творів: {{ u.count_texts }}</h2>
+
+    <div class=spacer></div>
+
+    {% if u.get_texts %}
+        {% regroup u.get_texts by type as grouped %}
+        {% for group in grouped %}
+            {{ group.grouper|cattext }}
+            <div style='margin: 3px 0 12px 20px; padding: 0;'>
+                {% for t in group.list %}
+                    <div style='margin-bottom: 4px; text-align: left;'><a
+                            href="{{ t.get_absolute_url }}">{{ t.get_title|striptags }}</a></div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}

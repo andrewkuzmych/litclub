@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load texts %}
+{% block main %}
+    <div id="content-margin">
+
+
+    <h1>{{ type|cattext }}</h1>
+    <div class=spacer></div>
+    <table width=100% cellpadding=4 cellspacing=0 class=list>
+        <tr>
+            <td class=header>Дата</td>
+            <td class=header>Автор та назва твору</td>
+        </tr>
+        {% for t in texts %}
+            <tr {% if t.odd %}class=odd{% endif %}>
+                <td class=date>{% if forloop.first %}{{ t.submit_date|date_today|safe }}{% else %}{{ t.submit_date|date_today:3|safe }}{% endif %}</td>
+                <td style=title><span class=user_s><a
+                        href="{{ t.user.get_profile.get_url }}">{{ t.user.get_profile.get_name|striptags }}</a></span>
+                    &nbsp;&laquo;<a href="{{ t.get_absolute_url }}">{{ t.get_title|striptags }}</a>&raquo;</td></tr>
+        {% endfor %}
+        <tr>
+            <td colspan=2>
+                <div class=spacer></div>
+                <center>{% paginator %}</center>
+            </td>
+        </tr>
+    </table>
+
+
+
+{% endblock %}
+{% block right %}{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load texts %}
+
+{% block title %}{{ flatpage.title }}{% endblock %}
+
+{% block menu %}
+    {% include "_menu.html" %}
+{% endblock %}
+
+{% block fullwidth %}
+
+
+    <h1>{{ flatpage.title }}</h1>
+    {{ flatpage.content|linebreaksp|safe }}
+
+{% endblock %}

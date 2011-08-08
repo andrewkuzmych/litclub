@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
+    <file url="file://$PROJECT_DIR$/templates/error.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/templates/litclub/messages/topic.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/templates/litclub/messages/topics.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/templates/litclub/users/favorite_texts.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/templates/litclub/users/profile_menu.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/templates/litclub/users/subscription.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/templates/litclub/users/subscription_of.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/templates/texts/limit_dialog.html" charset="UTF-8" />
+  </component>
+</project>
+

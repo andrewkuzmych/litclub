@@ -1,0 +1,22 @@
+{% extends "users/profile_menu.html" %}
+
+{% load texts %}
+{% load html %}
+
+{% block profile_page %}
+    <table cellpadding="0" cellspacing="0">
+        <tr>
+            <td><h2>Користувач підписаний на наступних авторів:</h2></td>
+        </tr>
+    
+        {% for subscription in subscriptions %}
+        <tr>
+            <td style="padding-top:10px">
+                <a href="{{ subscription.publisher.get_profile.get_url }}">
+                    {{ subscription.publisher.get_profile.get_name|striptags }}
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

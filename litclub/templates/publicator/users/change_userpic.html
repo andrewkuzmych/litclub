@@ -1,0 +1,43 @@
+{% extends "light.html" %}
+
+{% block left %}
+    <style>
+        .options_navi {
+            margin-bottom: 9px;
+        }
+    </style>
+
+    <div style='padding-left: 40px; padding-top: 10px; font-size: 13px;'>
+        <div style='color: gray; font-size: 15px; padding-bottom: 9px;'>Настройки</div>
+        <div class=options_navi><a href="/users/change_profile/">Отредактировать профиль</a></div>
+        <div class=options_navi>Сменить юзерпик</div>
+        <div class=options_navi><a href="/users/change_password/">Установить новый пароль</a></div>
+    </div>
+{% endblock %}
+
+{% block title %}Смена юзерпика{% endblock %}
+
+{% block main %}
+    <div class=medium style='padding-left: 40px;'>
+    <h1>Смена юзерпика</h1>
+    <form method=post action=/users/change_userpic/ enctype="multipart/form-data" >
+    <div>
+        {% if user.get_profile.userpic %}
+            <img class=userpic src="{{ user.get_profile.get_userpic_url }}" alt="" class=userpic>
+        {% else %}
+            <img src="http://media.litclub.org.ua/userpics/nos" width=48 height=48 alt="" class=userpic>
+        {% endif %}
+    </div>
+    <div style='padding-top: 24px; padding-bottom: 2px;'>Выбирете любую картинку со своего компьютера:</div>
+    <div>{{ form.userpic }} {{ form.userpic_file }}</div>
+    {% if form.userpic_file.errors %}
+        <div class=error>{{ form.userpic_file.errors|join:" " }}</div>{% endif %}
+
+    <div style='padding-top: 12px; padding-bottom: 12px;'><input value=" Сменить " type="submit"></div>
+
+    {% if messages %}
+        <div><span style='color: green;'>Юзерпик изменен.</span> Если вы дальше видите старый юзерпик — нажмите Ctrl+F5,
+        пожалуйста.{% endif %}
+    </form>
+    </div>
+{% endblock %}

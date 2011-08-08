@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% load texts %}
+
+{% block main %}
+    <table width=100% cellpadding=4 cellspacing=0 class=list>
+        <tr>
+            <td colspan=3><h1 style='margin-top: 0px;'>Нові твори</h1></td>
+        </tr>
+        <tr>
+            <td class=header>Дата</td>
+            <td class=header colspan=2>Назва твору</td>
+            <td class=header width=40>Ком.</td>
+            <td class=header>Автор</td>
+        </tr>
+        {% for t in texts %}
+            <tr {% if t.odd %}class=odd{% endif %}>
+                <td class=date>{% if forloop.first %}{{ t.submit_date|date_today|safe }}{% else %}{{ t.submit_date|date_today:3|safe }}{% endif %}</td>
+                <td style=title colspan=2><a href="/texts/show/{{ t.id }}/">{{ t.get_title|striptags }}</a> <span
+                        class="type">{{ t.type|cattext }}</span></td>
+                <td style='text-align: right; padding-right: 18px;'>{{ t.comments_count }}</td>
+                <td class=user><a href="{{ t.user.get_profile.get_url }}">{{ t.user.get_profile.get_name }}</a></td>
+            </tr>
+        {% endfor %}
+
+        <tr>
+            <td colspan=3><h1>Нові рецензії</h1></td>
+        </tr>
+        <tr>
+            <td class=header>Дата</td>
+            <td class=header colspan=2>Назва рецензії</td>
+            <td class=header width=40>Ком.</td>
+            <td class=header>Автор</td>
+        </tr>
+        {% for t in reviews %}
+            <tr {% if t.odd %}class=odd{% endif %}>
+                <td class=date>{% if forloop.first %}{{ t.submit_date|date_today|safe }}{% else %}{{ t.submit_date|date_today:3|safe }}{% endif %}</td>
+                <td style=title colspan=2><a href="/texts/show/{{ t.id }}/">{{ t.get_title|striptags }}</a></td>
+                <td style='text-align: right; padding-right: 18px;'>{{ t.comments_count }}</td>
+                <td class=user><a href="{{ t.user.get_profile.get_url }}">{{ t.user.get_profile.get_name }}</a></td>
+            </tr>
+        {% endfor %}
+
+        <tr>
+            <td colspan=3><h1>Форум</h1></td>
+        </tr>
+        <tr>
+            <td class=header>Дата</td>
+            <td class=header colspan=2>Назва теми</td>
+            <td class=header>Ком.</td>
+            <td class=header>Автор</td>
+        </tr>
+        {% for t in forum %}
+            <tr {% if t.odd %}class=odd{% endif %}>
+                <td class=date>{% if forloop.first %}{{ t.submit_date|date_today|safe }}{% else %}{{ t.submit_date|date_today:3|safe }}{% endif %}</td>
+                <td style=title colspan=2><a href="/texts/show/{{ t.id }}/">{{ t.get_title|striptags }}</a></td>
+                <td style='text-align: right; padding-right: 18px;'>{{ t.comments_count }}</td>
+                <td class=user><a href="{{ t.user.get_profile.get_url }}">{{ t.user.get_profile.get_name }}</a></td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td colspan=3><h1>Нові коментарі</h1></td>
+        </tr>
+        <tr>
+            <td class=header>Дата</td>
+            <td class=header>Назва тексту</td>
+            <td class=header>Ком.</td>
+            <td class=header>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Автор&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td class=header>Коментатор</td>
+        </tr>
+        <tr>
+            <td colspan=3>{% for t in comments %}</td></tr>
+                <tr {% if t.odd %}class=odd{% endif %}>
+                    <td class=date>{% if forloop.first %}{{ t.last_comment_date|date_today:2|safe }}{% else %}{{ t.last_comment_date|date_today:2|safe }}{% endif %}</td>
+                    <td style=title><a href="/texts/show/{{ t.id }}/">{{ t.get_title|striptags }}</a> <span
+                            class="type">{{ t.type|cattext }}</span></td>
+                    <td style='text-align: right; padding-right: 18px;'>{{ t.comments_count }}</td>
+                    <td class=user><a href="{{ t.user.get_profile.get_url }}">{{ t.user.get_profile.get_name }}</a></td>
+                    <td class=user>
+                        {% if t.last_comment_user.username %}<a
+                                href="{{ t.last_comment_user.get_profile.get_url }}/">{{ t.last_comment_user.get_profile.get_name }}</a>{% else %}
+                            Анонім{% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+    </table>
+{% endblock %}
+
+{% block right %}
+    <h2>Кращі твори тижня</h2>
+    <ol class=right_top>
+        {% for t in week %}
+            <li><a style='color:black; text-decoration: none;'
+                   href="{{ t.user.get_profile.get_url }}/">{{ t.user.get_profile.get_name }}</a> &laquo;<a
+                    href="/texts/show/{{ t.id }}/">{{ t.get_title|striptags }}</a>&raquo; ({{ t.rating }})
+            </li>
+        {% endfor %}
+    </ol>
+
+    <h2>Рейтинг поезії та іншого</h2>
+    <ol class=right_top>
+        {% for t in top %}
+            <li><a style='color:black; text-decoration: none;'
+                   href="{{ t.user.get_profile.get_url }}/">{{ t.user.get_profile.get_name }}</a> &laquo;<a
+                    href="/texts/show/{{ t.id }}/">{{ t.get_title|striptags }}</a>&raquo; ({{ t.rating }})
+            </li>
+        {% endfor %}
+    </ol>
+
+    <h2>Рейтинг прози</h2>
+    <ol class=right_top>
+        {% for t in proza %}
+            <li><a style='color:black; text-decoration: none;'
+                   href="{{ t.user.get_profile.get_url }}/">{{ t.user.get_profile.get_name }}</a> &laquo;<a
+                    href="/texts/show/{{ t.id }}/">{{ t.get_title|striptags }}</a>&raquo; ({{ t.rating }})
+            </li>
+        {% endfor %}
+    </ol>
+
+{% endblock %}
+
+{% block morda_bottom %}
+    {% if not user.get_profile.dont_show_ads %}<p>
+        <center style='margin: 12px; font-size: 11px;'><a href=http://legalsystems.com.ua>Аутсорсинг юридических услуг,
+            абонементное юридическое обслуживание</a>.
+        </center></p>{% endif %}
+{% endblock %}

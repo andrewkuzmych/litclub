@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <form method=post action=/users/login_do/>
+        <div id="content-margin">
+            <input type=hidden name="redirect" value="{{ redirect }}">
+            <table>
+                <tr>
+                    <td></td>
+                    <td><h1>Вхід</h1></td>
+                </tr>
+                <tr>
+                    <td colspan=2>
+                        <div class=spacer></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td width=200>Псевдо:</td>
+                    <td><input value="{{ username }}" name="username" type="text" size=35></td>
+                </tr>
+                <tr>
+                    <td colspan=2>
+                        <div class=spacer></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Пароль:</td>
+                    <td><input value="" name="password" type="password" size=35></td>
+                </tr>
+                {% if error %}
+                    <tr>
+                    <td></td>
+                    <td class=error>{{ error }}</td></tr>{% endif %}
+                <tr>
+                    <td colspan=2>
+                        <div class=spacer></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input value="   Зайти   " type="submit"></td>
+                </tr>
+            </table>
+        </div>
+    </form>
+{% endblock %}
+{% block right %}{% endblock %}

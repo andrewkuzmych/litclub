@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load texts %}
+{% load html %}
+
+{% block main %}
+
+<table width=100% cellspacing=0 style="padding-left:100px; padding-top:20px; text-align:left;">
+    <tr valign="top">
+        <td valign="top" width="200px">
+
+            <div class=spacer></div>
+            {% if u.userpic %}
+                <img class=userpic src="{{ u.get_userpic_url }}" alt="" class=userpic>
+            {% else %}
+                <img src="http://media.litclub.org.ua/media/userpics/nos" width=48 height=48 alt="" class=userpic>
+            {% endif %}
+
+            <div class=spacer></div>
+            <div class=spacer></div>
+
+            {% if not user.is_anonymous %}
+                {% comment %} user on his own page {% endcomment %}
+                {% ifequal u user.get_profile %}
+                    <a href="{{ u.get_url }}">Творчість</a> <br>
+                    <a href="/messages/topics">Повідомлення</a> <br>
+                    <a href="/users/subscription">Підписка</a> <br>
+                    <a href="/users/favorite/texts">Улюблене</a>
+
+                    <div class=spacer></div>
+                    <div class=spacer></div>
+                    Змінити: <br>
+                    &nbsp;<a href=/users/change_profile/>профіль</a> <br>
+                    &nbsp;<a href=/users/change_userpic/>юзерпік</a> <br>
+                    &nbsp;<a href=/users/change_password/>пароль</a>
+
+                {% comment %} logged user on some profile page {% endcomment %}
+                {% else %}
+                    <a href="/messages/send/form/{{ u.username }}">Надіслати повідомлення</a> <br>
+                    {% if can_subscribe %}
+                        <a href="/users/subscribe/{{ u.user.id }}">Підписатися на нові твори</a>
+                    {% endif %}
+                    {% if can_unsubscribe%}
+                        <a href="/users/unsubscribe/{{ u.user.id }}">Відписатися</a>
+                    {% endif %}
+                    <div class=spacer></div>
+                    <div class=spacer></div>
+                    <a href="{{ u.get_url }}">Творчість</a> <br>
+                    <a href="/users/subscription/{{ u.user.id }}">Підписка</a> <br>
+                    <a href="/users/favorite/texts/{{ u.user.id }}">Улюблене</a>
+                {% endifequal %}
+
+            {% comment %} anonymous user on some profile page {% endcomment %}
+            {% else %}
+                <a href="{{ u.get_url }}">Творчість</a> <br>
+                <a href="/users/subscription/{{ u.user.id }}">Підписка</a> <br>
+                <a href="/users/favorite/texts/{{ u.user.id }}">Улюблене</a>
+            {% endif %}
+        </td>
+
+        <td>
+            {% if u.name %}
+                <h1>{{ u.name|striptags }}</h1>
+                {{ u.username }}<br>
+            {% else %}
+                <h1>{{ u.username }}</h1>
+            {% endif %}
+            {% block profile_page %} Please add the page {% endblock %}
+        </td>
+    </tr>
+</table>
+
+{% endblock %}
+{% block right %}{% endblock %}

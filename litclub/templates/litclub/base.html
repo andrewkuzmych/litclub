@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>
+        {% if pagetitle %}
+            Літклуб | {{ pagetitle }}
+        {% else %}
+            Літклуб
+        {% endif %}
+    </title>
+
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <link href="{{ MEDIA_URL }}css/main_001.css" rel="stylesheet" type="text/css">
+
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/feeds/texts/"/>
+
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.2r1/build/assets/skins/sam/skin.css">
+    <script src="http://yui.yahooapis.com/2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+    <script src="http://yui.yahooapis.com/2.8.2r1/build/element/element-min.js"></script>
+    <!-- Needed for Menus, Buttons and Overlays used in the Toolbar -->
+    <script src="http://yui.yahooapis.com/2.8.2r1/build/container/container_core-min.js"></script>
+    <script src="http://yui.yahooapis.com/2.8.2r1/build/menu/menu-min.js"></script>
+    <script src="http://yui.yahooapis.com/2.8.2r1/build/button/button-min.js"></script>
+    <!-- Source file for Rich Text Editor-->
+    <script src="http://yui.yahooapis.com/2.8.2r1/build/editor/editor-min.js"></script>
+
+    <script>
+        function do_it(theURL, mess) {
+            if (confirm(mess)) {
+                window.location.href = theURL;
+            } else {
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-19557794-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+
+        function fixImage(image) {
+            image.removeAttribute('width');
+            image.removeAttribute('height');
+            var width = image.naturalWidth;
+            var height = image.naturalHeight;
+            var maxSize = 150;
+
+            if (height > maxSize || width > maxSize) {
+                if (height > width) {
+                    width = width * maxSize / height;
+                    height = maxSize;
+                } else {
+                    height = height * maxSize / width;
+                    width = maxSize;
+                }
+            }
+
+            image.height = height;
+            image.width = width;
+        }
+
+    </script>
+
+</head>
+<body>
+<div id="top">
+    <div id="top_left"><a href="/">На першу сторінку</a></div>
+    <div id="top_right">
+        {% if not user.is_anonymous %}
+            <div class=text style='padding-right: 10px;'>Додати:</div>
+            <a href=/texts/add/1/>прозу</a> <a href=/texts/add/2/>поезію</a> <a href=/texts/add/3/>інше</a>
+            <a href=/texts/add/4/>тему на форум</a>
+        {% endif %}
+        <div class=text style='width: 150px;'>&nbsp;</div>
+        {% if not user.is_anonymous %}
+            <a href="/users/profile/{{ user.username }}/"><b>{{ user.username }}</b></a>
+            <a href=/messages/topics>Повідомлення <b>({{ user.get_profile.get_count_of_all_not_read_messages }})</b></a>
+            <a href=/users/subscription>Підписка <b>({{ user.get_profile.get_count_of_not_read_subscription }})</b></a>
+            <a style='color: #c00' href=/users/logout_do/>Вийти</a>
+        {% else %}
+            <a href="/users/register/">Реєстрація</a><a href="/users/login/">Зайти</a>
+        {% endif %}
+    </div>
+</div>
+
+<center>
+    <table border="0">
+        <tr>
+            <td colspan="7" align="center">
+                <a href="/"><img id="imgLitClub" src="{{ MEDIA_URL }}images/menu/litclub_logo_small.png"
+                     style="width:375px; height:125px;" alt="ЛітКлуб лого"/>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td width="150px">
+                <a href="/texts/list"><img src="{{ MEDIA_URL }}images/menu/all_poetry.png" style="border:0px;"
+                                              alt="всі твори"/></a>
+            </td>
+            <td width="110px">
+                <a href="/texts/list/1"><img src="{{ MEDIA_URL }}images/menu/prose.png" style="border:0px;"
+                                              alt="проза"/></a>
+            </td>
+            <td width="110px">
+                <a href="/texts/list/2/"><img src="{{ MEDIA_URL }}images/menu/poetry.png" style="border:0px;"
+                                              alt="поезія"/></a>
+            </td>
+            <td width="90px">
+                <a href="/texts/list/3"><img src="{{ MEDIA_URL }}images/menu/other.png" style="border:0px;" alt="інше"/></a>
+            </td>
+            <td width="120px">
+                <a href="/texts/list/5/"><img src="{{ MEDIA_URL }}images/menu/reviews.png" style="border:0px;"
+                                              alt="рецензії"/></a>
+            </td>
+            <td width="120px">
+                <a href="/texts/list/4/"><img src="{{ MEDIA_URL }}images/menu/forum.png" style="border:0px;" alt="форум"/></a>
+            </td>
+            <td>
+                <a href="/users/list/"><img src="{{ MEDIA_URL }}images/menu/author.png" style="border:0px;" alt="автор"/></a>
+            </td>
+        </tr>
+    </table>
+</center>
+
+<!--<div style='float: right; margin-right: 10px; text-align: right;'><a style='color: #080; text-decoration: none; font: 14px Times;' href=/texts/show/3223/>Що трапилося з Літклубом?</a></div>-->
+<div class=line></div>
+<div class=spacer></div>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class=message>{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+{% if 0 and not user.get_profile.dont_show_ads %}
+    <div style='text-align: center; margin: 6px;'><a
+            href=http://softlist.com.ua/uk/products/kaspersky-antivir-70.html?from=1><img
+            src="http://media.litclub.org.ua/softlist_bn_v1.1_ukr.gif" width=728 height=90></a></div>
+{% endif %}
+
+<div id="wrapper">
+    {% block fullwidth %}
+    {% endblock %}
+    <div id="content-container">
+        <div id="content">
+            {% block main %}{% endblock %}
+        </div>
+    </div>
+</div>
+<div id="right-container">
+    <div id="right">
+        {% block right %}
+        {% endblock %}
+    </div>
+</div>
+
+{% block bottom %}
+{% endblock %}
+
+<div id="footer">{% if 0 %}<p>
+    <!-- STATS: Total: %(totTime).2f Python: %(pyTime).2f DB: %(dbTime).2f Queries: %(queries)d <br>(qList)s --></p>{% endif %}
+    <p>&copy; Всі права на тексти належать їх авторам.<br>
+        &copy; <a href="mailto:litclubua@gmail.com">LitClub</a>
+    </p>
+    {% block morda_bottom %}{% endblock %}
+</div>
+
+</body>
+</html>

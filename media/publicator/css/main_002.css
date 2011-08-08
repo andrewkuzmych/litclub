@@ -1,0 +1,69 @@
+body, td { font-family: arial, sans-serif; }
+
+.wcol			            {margin-top: 5px; margin-right: 10px; margin-bottom: 5px; margin-left: 10px; font-family: arial; font-size: 14px; color: #ffffff; font-weight: bold;}
+.wcol:link,.wcol:active		    {margin-top: 5px; margin-right: 10px; margin-bottom: 5px; margin-left: 0px; text-align: right; font-family: arial; font-size: 14px; color: #ffffff; font-weight: bold;}
+.wcol:visited		            {margin-top: 5px; margin-right: 10px; margin-bottom: 5px; margin-left: 0px; text-align: right; font-family: arial; font-size: 14px; color: #ffffff; font-weight: bold;}
+
+.ftext			            {font-family: arial; font-size: 10px; font-weight: bold; color: white;}
+.ltext              	    {font-family: arial; font-size: 10px; font-weight: bold; color:white; text-decoration: none;}
+.ltext:link,.ltext:visited,.ltext:active            	    {font-family: arial; font-size: 10px; font-weight: bold; color:white; text-decoration: none;}
+
+
+.ltext,.ltext:visited,.ltext:active     {font-family: arial; font-size: 10px; font-weight: bold; color:white; text-decoration: none;}
+.reglink		            {font-family: arial; font-size: 9px; font-weight: bold; color: white;}
+.reglink:link		            {font-family: arial; font-size: 9px; font-weight: bold; color: white;}
+.reglink:visited                    {font-family: arial; font-size: 9px; font-weight: bold; color: white;}
+.reglink:active                     {font-family: arial; font-size: 9px; font-weight: bold; color: white;}
+.login			            {font-family: arial; font-size: 10px; font-weight: bold; width: 100px;}
+.bcol			            {color: #546C72; font-family: arial; font-size: 13px; margin-top: 10px; margin-left: 10px; margin-bottom: 10px; margin-right: 10px; text-align: justify;}
+.bscol			            {color: #546C72; font-family: arial; font-size: 13px; margin-top: 10px; margin-left: 0px; margin-bottom: 10px; margin-right: 10px; text-align: justify;}
+.gcol			            {color: #787878; font-family: arial; font-size: 11px; margin-top: 10px; margin-left: 10px; margin-bottom: 10px; margin-right: 10px; text-align: justify;}
+
+h1			            {font-family: arial; font-size: 32px; font-weight: bold; color: black; text-decoration:none;}
+h1:link		            { text-decoration: none; color:black;}
+h1:active, h1:visited            { color:black;}
+
+.sdot			            {font-family: arial; font-size: 18px; color: black; text-decoration:none;}
+.sdot:link		            {font-family: arial; font-size: 18px; text-decoration: none; color:black;}
+.sdot:active,.sdot:visited            {font-family: arial; font-size: 18px; text-decoration: none; color:black;}
+
+
+.quotearea                          {margin-top: 5px; margin-left:20px; margin-bottom:5px; margin-right:10px;}
+
+.wdot			            {font-family: arial; font-size: 30px; color: white; text-decoration:none;}
+.wdot:link,.wdot:active,.wdot:visited	    {font-family: arial; font-size: 30px; text-decoration: none; color:white;}
+
+.ddot			            {font-family: arial; font-size: 22px; color: black; text-decoration:none;}
+
+.date			            {font-family: arial; font-size: 16px; font-weight: bold; color: #565656;}
+.quote			            {font-family: arial; font-size: 11px; color: white; text-decoration: none;}
+.quote:link,.quote:active,.quote:visited          {font-family: arial; font-size: 11px; color: white; text-decoration: none;}
+
+.desc                               {font-family: arial; font-size: 11px; color: black;}
+.gmbutton                           {font-family: arial; font-size: 10px; font-weight: bold; width:130px; height:30px;}
+td                                  {font-family: arial; font-size: 12px; font-color: black;}
+a:link                              {color: #0e74ef;}
+a:visited,a:active                  {color: #0e74ef;}
+
+/* Nvc */
+img { border: 0 }
+.menu_top, .menu_top a, .menu_top a:visited { color: white; }
+
+div.comment { padding: 6px 0 }
+div.comment .header { background-color: #f5f5e8; padding: 0px; margin: 0px; text-align: left;}
+div.comment .info { padding: 0 10px;}
+div.comment small { font-size: 11px; }
+.userpic { border: 1px solid gray; padding: 0px; vertical-align: bottom; }
+div.comment .text { font-size: 12px; margin-bottom: 3px; }
+div.padding { padding: 3px 6px; }
+
+div#qr { width: 400px;}
+div#qr label { font-size: 11px; }
+.error { font: 11px/.8em Verdana, sans-serif; color: red; padding-bottom: 9px; }
+.spacer { height: 9px; font-size: 9px; }
+
+#text p {margin:0; line-height: 1.4em}
+#text p:first-letter {margin-left: 2em;}
+
+.right_top { margin: 0; padding: 0; margin-left: 25px; }
+.right_top li { font-size: 11px; margin: 2px 0; padding: 0; list-style-position: outside; }

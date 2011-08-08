@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block main %}
+    <form method=post action=/users/register/>
+        <div id="content-margin">
+            <table>
+                <tr>
+                    <td></td>
+                    <td><h1>Реєстрація</h1></td>
+                </tr>
+                <tr>
+                    <td colspan=2>
+                        <div class=spacer></div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Псевдо:</td>
+                    <td>{{ form.username }}</td>
+                </tr>
+                {% if form.username.errors %}
+                    <tr>
+                    <td></td>
+                    <td class=error>{{ form.username.errors|join:" " }}</td></tr>{% endif %}
+
+                <tr>
+                    <td>Адреса ел. пошти:</td>
+                    <td>{{ form.email }}</td>
+                </tr>
+                {% if form.email.errors %}
+                    <tr>
+                    <td></td>
+                    <td class=error>{{ form.email.errors|join:" " }}</td></tr>{% endif %}
+
+                <tr>
+                    <td colspan=2>
+                        <div class=spacer></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Пароль:</td>
+                    <td>{{ form.password1 }}</td>
+                </tr>
+                <tr>
+                    <td>Ще раз пароль:</td>
+                    <td>{{ form.password2 }}</td>
+                </tr>
+                {% if form.password1.errors %}
+                    <tr>
+                    <td></td>
+                    <td class=error>{{ form.password1.errors|join:" " }}</td></tr>{% endif %}
+
+                <tr>
+                    <td></td>
+                    <td><input value=" Зареєструватись " type="submit"></td>
+                </tr>
+
+
+            </table>
+        </div>
+    </form>
+{% endblock %}
+{% block right %}{% endblock %}
+
+
+
+
