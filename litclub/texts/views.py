@@ -29,7 +29,6 @@ def _send_mail(*kw):
     except:
         pass
 
-
 def add_text(request, type):
     if request.user.is_authenticated():
         manipulator = Text.AddManipulator()
@@ -91,12 +90,14 @@ def add_text(request, type):
 
         form = forms.FormWrapper(manipulator, new_data, errors)
 
+        if type == '1' or type == '2' or type == '3':
+           form.can_hide = 1
+
         return render_to_response('texts/add_form.html', {'form': form, 'type': type, 'related': related, },
                                   context_instance=RequestContext(request))
 
     else:
         return HttpResponseForbidden("403 Forbidden")
-
 
 from django import newforms
 
@@ -112,7 +113,6 @@ class TextForm(newforms.Form):
                                widget=newforms.TextInput(attrs={'size': 70}, ), required=False)
     annotation = newforms.CharField(label=u"Аннотация", widget=newforms.Textarea(), required=False)
     text = newforms.CharField(label=u"Текст", widget=newforms.Textarea(), required=False)
-
 
 def modify_text_publicator(request, mode, id=None):
     if not request.user.is_authenticated():
@@ -176,7 +176,6 @@ def modify_text_publicator(request, mode, id=None):
     return render_to_response('texts/add_form_publicator.html', {'form': form, 'mode': mode},
                               context_instance=RequestContext(request))
 
-
 def change_text(request, text_id):
     try:
         manipulator = Text.ChangeManipulator(text_id)
@@ -190,7 +189,7 @@ def change_text(request, text_id):
 
     if request.POST:
         new_data = request.POST.copy()
-        new_data['type'] = unicode(text.type)
+        #new_data['type'] = unicode(text.type)
         new_data['user'] = unicode(text.user.id)
         new_data['rating'] = unicode(text.rating)
         new_data['rating_count'] = unicode(text.rating_count)
@@ -205,6 +204,13 @@ def change_text(request, text_id):
         new_data = manipulator.flatten_data()
 
     form = forms.FormWrapper(manipulator, new_data, errors)
+    categories = (( 2, u"Поезія"),
+                  ( 1, u"Проза"),
+                  ( 3, u"Інше"))
+    if any(text.type == x for x,y in categories):
+        form.category = text.type
+        form.categories = categories
+        
     return render_to_response('texts/change_form.html', {'form': form, 'text': text},
                               context_instance=RequestContext(request))
 
@@ -212,7 +218,7 @@ def delete_text(request, text_id):
     text = get_object_or_404(Text, pk=text_id)
     link = "/users/profile/%s/" % text.user.username
 
-    if request.user.is_anonymous() or (not text.user == request.user and not request.user.is_staff):
+    if request.user.is_anonymous() or (not request.user.is_staff):
         return HttpResponseForbidden("403 Forbidden")
 
     text.user.get_profile().texts = -1
@@ -226,11 +232,35 @@ def delete_text(request, text_id):
 
     return HttpResponseRedirect(link)
 
+def hide_text(request, text_id):
+    text = get_object_or_404(Text, pk=text_id)
+    link = "/texts/show/%s/" % text_id
+
+    if request.user.is_anonymous() or (not text.user == request.user and not request.user.is_staff):
+        return HttpResponseForbidden("403 Forbidden")
+
+    text.is_hidden = 1
+    text.save()
+
+    return HttpResponseRedirect(link)
+
+def open_text(request, text_id):
+    text = get_object_or_404(Text, pk=text_id)
+    link = "/texts/show/%s/" % text_id
+
+    if request.user.is_anonymous() or (not text.user == request.user and not request.user.is_staff):
+        return HttpResponseForbidden("403 Forbidden")
+
+    text.is_hidden = 0
+    text.save()
+
+    return HttpResponseRedirect(link)
+
 def list_texts(request, type=None):
     if type:
-        obj = Text.objects.filter(type=type).order_by('-submit_date')
+        obj = Text.objects.filter(type=type, is_hidden=0).order_by('-submit_date')
     else:
-        obj = Text.objects.filter(type__in=[1, 2, 3, 5]).order_by('-submit_date')
+        obj = Text.objects.filter(type__in=[1, 2, 3, 5], is_hidden=0).order_by('-submit_date')
     paginator = ObjectPaginator(obj, 50)
     page = int(request.GET.get('page', '1'))
     try:
@@ -249,9 +279,12 @@ def list_texts(request, type=None):
 def show_text(request, text_id):
     text = get_object_or_404(Text, id=text_id)
     if request.user.is_anonymous() or (not text.user == request.user and not request.user.is_staff):
-        pass
+    # only text owner can see own hidden texts
+        if text.is_hidden == 1:
+           return HttpResponseForbidden("403 Forbidden")
     else:
         text.can_change = 1
+
 
     if request.GET.get('rate', None):
         text.rate(request.user, request.GET.get('rate', None))
@@ -298,7 +331,7 @@ def show_text(request, text_id):
 
 def main(request):
 #texts = Text.objects.filter(type__in=[1,2,3]).order_by('-submit_date').extra( select = { 'one': " 1 /*" }, tables=['*/) AS `one` FROM `texts_text` force index (texts_text_submit_date) '])[:20]
-    texts = Text.objects.filter(type__in=[1, 2, 3]).order_by('-submit_date')[:20]
+    texts = Text.objects.filter(type__in=[1, 2, 3], is_hidden=0).order_by('-submit_date')[:20]
     reviews = Text.objects.filter(type=5).order_by('-submit_date')[:10]
     forum = Text.objects.filter(type=4).order_by('-submit_date')[:10]
     comments = Text.objects.all().order_by('-last_comment_date')[:20]

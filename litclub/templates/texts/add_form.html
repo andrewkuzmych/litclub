@@ -63,6 +63,12 @@
                     <td width=200>Текст:</td>
                     <td>{{ form.text }}</td>
                 </tr>
+                {% if form.can_hide %}
+                  <tr>
+                      <td>Прихований:  </td>
+                      <td>{{ form.is_hidden }}</td>
+                  </tr>
+                {% endif %}
                 {% if form.text.errors %}
                     <tr>
                     <td></td>

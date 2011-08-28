@@ -30,14 +30,36 @@ class UserProfile(models.Model):
     def split_email(self):
         return self.email.split('@')
 
+    def get_all_texts(self):
+        query = Text.objects.filter(user=self.user, type__in=[1, 2, 3, 5]);
+        return query.order_by('type', '-submit_date')
+
     def get_texts(self):
-        return Text.objects.filter(user=self.user, type__in=[1, 2, 3, 5]).order_by('type', '-submit_date')
+        query = Text.objects.filter(user=self.user, type__in=[1, 2, 3, 5], is_hidden=0);
+        return query.order_by('type', '-submit_date')
+
+    def get_hidden_texts(self):
+        query = Text.objects.filter(user=self.user, type__in=[1, 2, 3, 5], is_hidden=1);
+        if self.current_user != self.user and not self.current_user.is_staff:
+            return
+        #if self.current_user != self.user:
+        #    query = query.filter(is_hidden=0);
+        return query.order_by('type', '-submit_date')
 
     def count_texts(self):
-        if self.texts == -1:
-            self.texts = Text.objects.filter(user=self.user, type__in=[1, 2, 3, 5]).count()
-            self.save()
-        return self.texts
+        query = Text.objects.filter(user=self.user, type__in=[1, 2, 3, 5], is_hidden=0);
+        #if self.current_user != self.user:
+        #    query = query.filter(is_hidden=0);
+        return query.count()
+        #if self.texts == -1:
+        #    self.texts = query.count()
+        #    self.save()
+        #return self.texts
+    def count_hidden_texts(self):
+        query = Text.objects.filter(user=self.user, type__in=[1, 2, 3, 5], is_hidden=1);
+        if self.current_user != self.user and not self.current_user.is_staff:
+            return
+        return query.count()
 
     def get_name(self):
         if self.name:

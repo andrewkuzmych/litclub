@@ -129,8 +129,16 @@
         {% if text.can_change %}
             <div style='float: right; border: 1px solid green; padding: 6px; margin: 0 0 12px 12px'>
                 <a href=/texts/change/{{ text.id }}/>редагувати</a>
-                <a href="/texts/delete/{{ text.id }}/" onclick="return confirm('Действительно стереть?')"
-                   title="Стерти текст" style='color: #c00'>стерти</a>
+                {% ifequal text.is_hidden 1 %}
+                    <a href=/texts/open/{{ text.id }}/>відкрити</a>
+                {% endifequal %}
+                {% ifequal text.is_hidden 0 %}
+                    <a href=/texts/hide/{{ text.id }}/>приховати</a>
+                {% endifequal %}
+                {% if u.is_staff %}
+                  <a href="/texts/delete/{{ text.id }}/" onclick="return confirm('Дійсно стерти?')"
+                     title="Стерти текст" style='color: #cc0000'>стерти</a>
+                {% endif %}
             </div>
         {% endif %}
 

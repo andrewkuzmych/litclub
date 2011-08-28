@@ -18,6 +18,7 @@ class Text(models.Model):
     submit_date = models.DateTimeField(auto_now_add=True, db_index=True)
     comments_count = models.IntegerField()
     allow_comments = models.BooleanField(default=True)
+    is_hidden = models.BooleanField(default=False)
     rating = models.IntegerField(db_index=True, blank=True, null=True)
     rating_count = models.IntegerField()
     last_comment_date = models.DateTimeField(blank=True, null=True, db_index=True)
@@ -32,6 +33,9 @@ class Text(models.Model):
             return self.title
         else:
             return "(без назви)"
+
+    def get_is_hidden(self):
+        return self.is_hidden
 
     def get_absolute_url(self):
         return "/texts/show/%s/" % self.id

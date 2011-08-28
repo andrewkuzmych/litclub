@@ -14,6 +14,7 @@ urlpatterns = patterns('litclub.users.views',
 
                        (r'^reset_password/$', 'reset_password'),
                        (r'^reset_password_set/$', 'reset_password_set'),
+                       (r'^delete_user/(.+?)/$', 'delete_user'),
 
                        (r'^subscribe/(\d+)/$', 'subscribe'),
                        (r'^unsubscribe/(\d+)/$', 'unsubscribe'),

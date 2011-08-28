@@ -26,6 +26,8 @@ from PIL import Image
 from django.conf import settings
 
 #### moblog +
+from djlib.comments.models import Comment
+
 def _redirect(request, redirect=False):
     try:
         if not redirect:
@@ -134,13 +136,19 @@ def profile(request, username):
         raise Http404
 
     profile = user.get_profile()
+    profile.current_user = request.user
 
+    if request.user.is_staff:
+        can_delete = True
+    else:
+        can_delete = False
     # compose page title
     pageTitle = profile.name + " ( " + profile.username + " )"
 
     return render_to_response('users/profile.html',
                               {'pagetitle': pageTitle, 'u': profile,
                                'can_subscribe': can_subscribe(request.user, user),
+                               'can_delete': can_delete,
                                'can_unsubscribe': can_unsubscribe(request.user, user)},
                               context_instance=RequestContext(request))
 
@@ -310,6 +318,27 @@ def reset_password(request):
     return render_to_response('users/reset_password.html',
                               {'ok': ok, 'error': error, 'username': request.POST.get('username', ''), 'key': key},
                               context_instance=RequestContext(request))
+
+def delete_user(request, username):
+    user = get_object_or_404(User, username=username)
+    userProfile = get_object_or_404(UserProfile, user=user)
+
+    link = "/"
+
+    if (not request.user.is_staff):
+        return HttpResponseForbidden("403 Forbidden")
+
+    texts = userProfile.get_all_texts()
+
+    for t in texts:
+        for c in Comment.objects.filter(object_id=t.id):
+            c.delete()
+        t.delete()
+
+    userProfile.delete()
+    user.delete()
+
+    return HttpResponseRedirect(link)
 
 def reset_password_set(request):
     ok = False

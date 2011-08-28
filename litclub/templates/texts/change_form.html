@@ -54,6 +54,21 @@
                     <td>{{ form.allow_comments }}</td>
                 </tr>
                 <tr>
+                    <td>Прихований:</td>
+                    <td>
+                        {{ form.is_hidden }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Категорія:</td>
+                    <td>
+                         {% for x,y in form.categories %}
+                            <input type="radio" name="type"  value="{{ x }}" {% ifequal x form.category %} checked="checked"{% endifequal %} >{{ y }}<br />
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
                     <td></td>
                     <td><input value=" Змінити " type="submit"></td>
                 </tr>
